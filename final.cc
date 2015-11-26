@@ -25,8 +25,6 @@
 #include "diamondsquare.h"
 #include "terrain.h"
 using namespace std;
-
-
 double axeslen = 95;
 double asp = 1.0;
 #define PI 3.14159265
@@ -105,17 +103,15 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	terrain(400, 400, 400);	
-/*	
 	train(0, 0, 0, 200, 200, 200);	
 	glPushMatrix();
 	glScaled(200, 200, 200);
 	glTranslated(0, -0.82, -0.5);
+	terrain(0, 0, 1.5, 4, 4, 4);	
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glRotated(30, 0, 1, 0);
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glPopMatrix();
-*/
     ErrCheck("in display...");
     glFlush();
     glutSwapBuffers();
@@ -265,10 +261,9 @@ void setupRC()
 }
 
 
-
 int main(int argc, char** argv)
 {
-	diamondsquare(heightmap, 0.8, M, 0, 0, M - 1, M - 1); 	
+	diamondsquare(heightmap, 0.95, M, M / 3,  0, 0, M - 1, M - 1); 	
     glutInitWindowSize(windowsize, windowsize);
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -285,4 +280,3 @@ int main(int argc, char** argv)
     
     return 0;
 }
-

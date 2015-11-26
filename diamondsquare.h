@@ -14,7 +14,7 @@ extern "C" {
 //
 // draw the cylinder. for example the stick holding the bubble.
 //
-void diamondsquare(vector<vector<float> > &res, float rate, int M, int a, int b, int c, int d);
+void diamondsquare(vector<vector<float> > &res, float rate, int M, int H, int a, int b, int c, int d);
 
 #ifdef __cplusplus
 }   

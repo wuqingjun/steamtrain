@@ -20,10 +20,11 @@ const double PI = 3.1415926;
 // 
 //
 
-void terrain(double l, double w, double h)
+void terrain(double x, double y, double z, double l, double w, double h)
 {
 	int M = heightmap.size();
 	glPushMatrix();
+	glTranslated(x, y, z);
 	glScaled(l, w, h);
 	glColor3f(0.3, 0.4, 0.5);
 	for(int i = 0; i < M - 1; ++i)
