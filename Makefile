@@ -44,18 +44,19 @@ train.o: train.cc train.h
 terrain.o: terrain.cc terrain.h 
 diamondsquare.o: diamondsquare.cc diamondsquare.h
 sun.o: sun.cc sun.h
+smoothheightmap.o: smoothheightmap.cc smoothheightmap.h
 
 #  Create archive
-CSCIx229.a:fatal.o loadtexbmp.o print.o project.o errcheck.o object.o square.o sphere.o cylinder.o cube.o pie.o cover.o wheel.o pile.o raleway.o train.o terrain.o diamondsquare.o sun.o 
+CSCIx229.a:fatal.o loadtexbmp.o print.o project.o errcheck.o object.o square.o sphere.o cylinder.o cube.o pie.o cover.o wheel.o pile.o raleway.o train.o terrain.o diamondsquare.o sun.o smoothheightmap.o 
 	ar -rcs $@ $^
 
 $(EXE).o: $(EXE).cc
 .cc.o:
-	g++ -c $(CFLG) $< $(LIBS) 
+	g++ -g -c $(CFLG) $< $(LIBS) 
 
 #  Compile and link
 $(EXE):$(EXE).o CSCIx229.a 
-	g++ $(CFLG) -o $@ $^  $(LIBS) 
+	g++ -g $(CFLG) -o $@ $^  $(LIBS) 
 
 #  Clean
 clean:

@@ -20,22 +20,44 @@ const double PI = 3.1415926;
 // 
 //
 
+vector<float> normal(vector<vector<float> > &points)
+{
+	vector<float> res(3, 0);
+	res[0] = (points[1][1] - points[0][1]) * (points[2][2] - points[0][2]) - (points[2][1] - points[0][1]) * (points[1][2] - points[0][2]);  
+	res[1] = (points[1][2] - points[0][2]) * (points[2][0] - points[0][0]) - (points[2][2] - points[0][2]) * (points[1][0] - points[0][0]);  
+	res[2] = (points[1][0] - points[0][0]) * (points[2][1] - points[0][1]) - (points[2][0] - points[0][0]) * (points[1][1] - points[0][1]);  
+	return res;
+}
+
 void terrain(double x, double y, double z, double l, double w, double h)
 {
 	int M = heightmap.size();
 	glPushMatrix();
 	glTranslated(x, y, z);
 	glScaled(l, w, h);
-	glColor3f(0.3, 0.4, 0.5);
+	glColor3f(0, 0.8, 0);
 	for(int i = 0; i < M - 1; ++i)
 	{
-		glBegin(GL_TRIANGLE_STRIP);
+		vector<vector<float> > points(3, vector<float>(3, 0));
+		int idx = 0;
 		for(int j = 0; j < M ; ++j)
 		{
-			glVertex3f(1.0 * i / M, heightmap[i][j] / M, 1.0 * j / M); 		
-			glVertex3f(1.0 * (i + 1) / M, heightmap[i + 1][j] / M, 1.0 * j / M); 		
+			for(int n = 0; n < 2; ++n)
+			{
+				points[idx % 3][0] = 1.0 * (i + n) / M;
+				points[idx % 3][1] = heightmap[(i +n)][j] / M;
+				points[idx % 3][2] = 1.0 * j / M;	
+				++idx;
+				vector<float> norm = normal(points);
+				glBegin(GL_TRIANGLES);
+				for(int p = 0;idx > 1 && p < 3; ++p)
+				{
+					glNormal3f(norm[0], norm[1], norm[2]);
+					glVertex3f(points[p][0], points[p][1], points[p][2]); 
+				}
+				glEnd();
+			}
 		}
-		glEnd();
 	}
 	glPopMatrix();
 }

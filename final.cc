@@ -23,6 +23,7 @@
 #include "train.h"
 #include "raleway.h"
 #include "diamondsquare.h"
+#include "smoothheightmap.h"
 #include "terrain.h"
 #include "sun.h"
 
@@ -40,7 +41,7 @@ double th = 0; //102;
 double dim = 250;
 double windowsize = 450;
 int mode = 0;
-int smooth = 1;
+int smooth = 0;
 int ambient = 30;
 int diffuse   = 100;  
 int specular  =   0;  
@@ -52,13 +53,13 @@ float rep = 1.0;
 int texturebase = 6;
 float lh = 30;
 int animation = 1;
-int night = 0;
 float h2 = 0;
 
 double	ex = 0;
 double	ez = 0;
 double  ey = 0;
-const int M = pow(2, 5) + 1;
+const int H = 6;
+const int M = pow(2, H) + 1;
 vector<vector<float> > heightmap(M, vector<float>(M, 0.0));
 float white[] = {1, 1, 1, 1};
 float black[] = {0, 0, 0, 1};
@@ -68,14 +69,6 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glLoadIdentity();
-	if(night)
-	{	
-		glClearColor(0, 0, 0, 1.0);
-	}
-	else
-	{
-		glClearColor(1, 1, 1, 1.0);
-	}
 	glShadeModel(smooth ? GL_SMOOTH : GL_FLAT); 
 	glEnable(GL_NORMALIZE);
     glEnable(GL_LIGHTING);
@@ -222,10 +215,6 @@ void keyboard(unsigned char ch, int x, int y)
     {
 		upz = 1; upx = 0; upy = 0;
     }
-	else if(ch == 'n')
-	{
-		night += (night + 1) % 2;
-	}
     else if(ch == 27)
     {
         exit(0);
@@ -259,7 +248,8 @@ void setupRC()
 
 int main(int argc, char** argv)
 {
-	diamondsquare(heightmap, 0.95, M, M / 3,  0, 0, M - 1, M - 1); 	
+	diamondsquare(heightmap, 0.95, M, 5, 0, 0, M - 1, M - 1); 	
+	smoothheightmap(heightmap, 0.9, 20);
     glutInitWindowSize(windowsize, windowsize);
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
