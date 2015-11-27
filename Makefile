@@ -43,9 +43,10 @@ raleway.o: raleway.cc raleway.h
 train.o: train.cc train.h
 terrain.o: terrain.cc terrain.h 
 diamondsquare.o: diamondsquare.cc diamondsquare.h
+sun.o: sun.cc sun.h
 
 #  Create archive
-CSCIx229.a:fatal.o loadtexbmp.o print.o project.o errcheck.o object.o square.o sphere.o cylinder.o cube.o pie.o cover.o wheel.o pile.o raleway.o train.o terrain.o diamondsquare.o 
+CSCIx229.a:fatal.o loadtexbmp.o print.o project.o errcheck.o object.o square.o sphere.o cylinder.o cube.o pie.o cover.o wheel.o pile.o raleway.o train.o terrain.o diamondsquare.o sun.o 
 	ar -rcs $@ $^
 
 $(EXE).o: $(EXE).cc

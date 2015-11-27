@@ -31,13 +31,13 @@ void sphere(double x,
     float white[] = {1,1,1,1};
     float black[] = {0,0,0,1};
 
-    glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,shinyvec);
-    glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shinyvec);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white);
     
     if(isEmission)
     {
     	glColor3f(1,1, 1);
-	glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, white);
+		glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, white);
     	float bubbleposition[3] = {float(0), float(0), float(0)};
     	glLightfv(lightnum, GL_POSITION, bubbleposition);
     }

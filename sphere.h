@@ -9,7 +9,7 @@ extern "C" {
 
 extern float rep;
 extern float shinyvec[1];
-unsigned int texture[20];
+extern unsigned int texture[20];
 
 //
 // a function used to draw spheres: bubble and the bottom of the lamp.

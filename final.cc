@@ -24,6 +24,8 @@
 #include "raleway.h"
 #include "diamondsquare.h"
 #include "terrain.h"
+#include "sun.h"
+
 using namespace std;
 double axeslen = 95;
 double asp = 1.0;
@@ -46,11 +48,11 @@ int shininess =   0;
 float shinyvec[1] = { 0.0};
 int local = 1;
 unsigned int texture[20];
-bool switches[3] = {false, false, true};
 float rep = 1.0;
 int texturebase = 6;
 float lh = 30;
 int animation = 1;
+int night = 0;
 float h2 = 0;
 
 double	ex = 0;
@@ -58,38 +60,29 @@ double	ez = 0;
 double  ey = 0;
 const int M = pow(2, 5) + 1;
 vector<vector<float> > heightmap(M, vector<float>(M, 0.0));
-
-//
-// draw the cylinder. for example the stick holding the bubble.
-//
-void cylinder(double x, double y, double z, double r, double h, Color color, int ntex)
-{
-    double d = 1.0;
-    glPushMatrix();
-    glTranslated(x, y, z);
-    glScaled(r, 1, r); 
-    glColor3f(color.r, color.g, color.b);
-    
-   for(int i = 0;i <= 360; i += d)
-   {
-		glNormal3f(Cos(i), 0, Sin(i));
-		glTexCoord2f(rep * (float) i / 360, 0);
-        glVertex3f(Cos(i), 0, Sin(i));
-		glNormal3f(Cos(i), 0, Sin(i));
-		glTexCoord2f(rep * (float) i / 360, rep);
-        glVertex3f(Cos(i), h, Sin(i));
-    }
-    
-    glEnd();
-    glPopMatrix();
-}
+float white[] = {1, 1, 1, 1};
+float black[] = {0, 0, 0, 1};
 
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glLoadIdentity();
-    
+	if(night)
+	{	
+		glClearColor(0, 0, 0, 1.0);
+	}
+	else
+	{
+		glClearColor(1, 1, 1, 1.0);
+	}
+	glShadeModel(smooth ? GL_SMOOTH : GL_FLAT); 
+	glEnable(GL_NORMALIZE);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,local);
+
     if(mode)
     {
 		ex = 2.5 * dim * Sin(ph);
@@ -103,7 +96,8 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	train(0, 0, 0, 200, 200, 200);	
+	sun(300, 300, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
+	train(0, 0, 0, 200, 200, 200);
 	glPushMatrix();
 	glScaled(200, 200, 200);
 	glTranslated(0, -0.82, -0.5);
@@ -112,6 +106,7 @@ void display(void)
 	glRotated(30, 0, 1, 0);
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glPopMatrix();
+
     ErrCheck("in display...");
     glFlush();
     glutSwapBuffers();
@@ -162,75 +157,75 @@ void specialKeys( int key, int x, int y ) {
 
 void keyboard(unsigned char ch, int x, int y)
 {
-    if(ch >= '0' && ch <= '2')
-    {
-	switches[ch - '0'] = !switches[ch - '0'];		
-    }
-    else if(ch == 'a')
+    if(ch == 'a')
     {
     	animation = (animation + 1) % 2;	
     }	
     else if(ch == 'H')
     {
-	h2 += 5;
+		h2 += 5;
     }
     else if(ch == 'h')
     {
-	h2 -= 5;
+		h2 -= 5;
     }
     else if(ch == 'V')
     {
-	fov += 1.0;
+		fov += 1.0;
     }
     else if(ch == 'v')
     {
-	fov -= 1.0;
+		fov -= 1.0;
     }
     else if(ch == 'm')
     {
-	mode = (mode + 1) % 2;
+		mode = (mode + 1) % 2;
     }
     else if(ch == 's')
     {
-	smooth = (smooth + 1) % 2;
+		smooth = (smooth + 1) % 2;
     }
     else if(ch == 'N')
     {
-	shininess += 1;
+		shininess += 1;
     } 
     else if(ch == 'n')
     {
-	shininess -= 1;	
+		shininess -= 1;	
     }
     else if(ch == 'r')
     {
-	rep -= 0.1;
+		rep -= 0.1;
 	if(rep <0) {rep = 0;}
     }
     else if(ch == 'R')
     {
-	rep += 0.1;
+		rep += 0.1;
     }
     else if(ch == 'T')
     {
-	texturebase += 1;
+		texturebase += 1;
     }
     else if(ch == 't')
     {
-	texturebase -= 1;
+		texturebase -= 1;
     }
     else if(ch == 'x')
     {
-	upx = 1; upy = 0; upz = 0;
+		upx = 1; upy = 0; upz = 0;
     }
     else if(ch == 'y')
     {
-	upy = 1; upx = 0; upz = 0;
+		upy = 1; upx = 0; upz = 0;
     }
     else if(ch == 'z')
     {
-	upz = 1; upx = 0; upy = 0;
+		upz = 1; upx = 0; upy = 0;
     }
+	else if(ch == 'n')
+	{
+		night += (night + 1) % 2;
+	}
     else if(ch == 27)
     {
         exit(0);
@@ -257,7 +252,8 @@ void idle()
 }
 void setupRC()
 {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0, 0, 0, 1.0);
+	//glClearColor(1, 1, 1, 1.0);
 }
 
 
