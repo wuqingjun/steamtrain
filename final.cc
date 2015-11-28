@@ -24,7 +24,7 @@
 #include "raleway.h"
 #include "diamondsquare.h"
 #include "smoothheightmap.h"
-#include "terrain.h"
+#include "mountain.h"
 #include "sun.h"
 
 using namespace std;
@@ -89,12 +89,12 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	sun(300, 300, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
+	sun(300, 80, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
 	train(0, 0, 0, 200, 200, 200);
 	glPushMatrix();
 	glScaled(200, 200, 200);
 	glTranslated(0, -0.82, -0.5);
-	terrain(0, 0, 1.5, 4, 4, 4);	
+	mountain(0, 0, 1.5, 4, 4, 4);	
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glRotated(30, 0, 1, 0);
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));

@@ -58,17 +58,17 @@ void diamondsquare(vector<vector<float> > &res, float rate, int M, int H, int a,
 
 		if(c != 0 && c != M - 1)
 		{
-			maxN = max(res[c][b], res[m][n], res[c][d], (a + 2 * res.size() > 3 * c ? res[3 * c / 2 - a / 2][n] : 0));
-			minN = min(res[c][b], res[m][n], res[c][d], (a + 2 * res.size() > 3 * c ? res[3 * c / 2 - a / 2][n] : 0));
-			av = avg(res[c][b], res[m][n], res[c][d], (a + 2 * res.size() > 3 * c ? res[3 * c / 2 - a / 2][n] : 0));
+			maxN = max(res[c][b], res[m][n], res[c][d], (a + 2 * (int)res.size() > 3 * c ? res[3 * c / 2 - a / 2][n] : 0));
+			minN = min(res[c][b], res[m][n], res[c][d], (a + 2 * (int)res.size() > 3 * c ? res[3 * c / 2 - a / 2][n] : 0));
+			av = avg(res[c][b], res[m][n], res[c][d], (a + 2 * (int)res.size() > 3 * c ? res[3 * c / 2 - a / 2][n] : 0));
 			res[c][n] = av + (random(minN, maxN + INC) - minN) * rate;
 		}
 
 		if(d != 0 && d != M - 1)
 		{
-			maxN = max(res[c][b], res[m][n], res[c][d], (b + 2 * res.size() > 3 * d ? res[3 * d / 2 - b / 2][n] : 0));
-			minN = min(res[c][b], res[m][n], res[c][d], (b + 2 * res.size() > 3 * d ? res[3 * d / 2 - b / 2][n] : 0));
-			av = avg(res[c][b], res[m][n], res[c][d], (b + 2 * res.size() > 3 * d ? res[3 * d / 2 - b / 2][n] : 0));
+			maxN = max(res[c][b], res[m][n], res[c][d], (b + 2 * (int)res.size() > 3 * d ? res[3 * d / 2 - b / 2][n] : 0));
+			minN = min(res[c][b], res[m][n], res[c][d], (b + 2 * (int)res.size() > 3 * d ? res[3 * d / 2 - b / 2][n] : 0));
+			av = avg(res[c][b], res[m][n], res[c][d], (b + 2 * (int)res.size() > 3 * d ? res[3 * d / 2 - b / 2][n] : 0));
 			res[m][d] = av + (random(minN, maxN + INC) - minN) * rate;
 		}
 		diamondsquare(res, rate * rate, M, H, a, b, m, n);
