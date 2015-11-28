@@ -20,7 +20,7 @@ const double PI = 3.1415926;
 // 
 //
 
-vector<float> normal(vector<vector<float> > &originPoints, int idx)
+vector<float> normal3points(vector<vector<float> > &originPoints, int idx)
 {
 	vector<vector<float> > points;
 	for(int i = 0; i < 3; ++i)
@@ -42,12 +42,24 @@ vector<float> normal(vector<vector<float> > &originPoints, int idx)
 	return res;
 }
 
-void mountain(double x, double y, double z, double l, double w, double h)
+void tunnel(double x, double y, double z, double ml, double mw, double mh, double tl, double th)
 {
 	int M = heightmap.size();
 	glPushMatrix();
 	glTranslated(x, y, z);
-	glScaled(l, w, h);
+	glScaled(ml, mw, mh);
+
+	for(int i = 0; i < M; ++i)
+	{
+		for(int j = 0; j < M; ++j)
+		{
+			if( i >= M / 4 && i <= M / 2 && heightmap[i][j] / M < .05)
+			{
+				heightmap[i][j] = 0.05 * M;
+			}	
+		}
+	}		
+
 	glColor3f(0, 0.8, 0);
 	for(int i = 0; i < M - 1; ++i)
 	{
@@ -61,7 +73,7 @@ void mountain(double x, double y, double z, double l, double w, double h)
 				points[idx % 3][1] = heightmap[(i +n)][j] / M;
 				points[idx % 3][2] = 1.0 * j / M;	
 				++idx;
-				vector<float> norm = normal(points, idx % 3);
+				vector<float> norm = normal3points(points, idx % 3);
 				glBegin(GL_TRIANGLES);
 				for(int p = 0;idx > 1 && p < 3; ++p)
 				{

@@ -25,6 +25,7 @@
 #include "diamondsquare.h"
 #include "smoothheightmap.h"
 #include "mountain.h"
+#include "tunnel.h"
 #include "sun.h"
 
 using namespace std;
@@ -94,7 +95,8 @@ void display(void)
 	glPushMatrix();
 	glScaled(200, 200, 200);
 	glTranslated(0, -0.82, -0.5);
-	mountain(0, 0, 1.5, 4, 4, 4);	
+	//mountain(0, 0, 1.5, 4, 4, 4);	
+	tunnel(0, 0, 1.5, 4, 4, 4, 2, 2);	
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glRotated(30, 0, 1, 0);
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
