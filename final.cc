@@ -90,13 +90,14 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	sun(300, 80, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
-	train(0, 0, 0, 200, 200, 200);
+	glTranslated(0, -200,0);
+	sun(300, 400, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
+	train(0, 0, 0, 100, 100, 100);
 	glPushMatrix();
-	glScaled(200, 200, 200);
+	glScaled(100, 100, 100);
 	glTranslated(0, -0.82, -0.5);
 	//mountain(0, 0, 1.5, 4, 4, 4);	
-	tunnel(0, 0, 1.5, 4, 4, 4, 2, 2);	
+	tunnel(0, -0.1, 1.5, 8, 8, 8, 2, 2);	
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glRotated(30, 0, 1, 0);
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
@@ -250,7 +251,7 @@ void setupRC()
 
 int main(int argc, char** argv)
 {
-	diamondsquare(heightmap, 0.95, M, 5, 0, 0, M - 1, M - 1); 	
+	diamondsquare(heightmap, 0.95, M, 10, 0, 0, M - 1, M - 1); 	
 	smoothheightmap(heightmap, 0.9, 20);
     glutInitWindowSize(windowsize, windowsize);
     glutInit(&argc, argv);

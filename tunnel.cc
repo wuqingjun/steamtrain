@@ -1,6 +1,7 @@
 #include "color.h"
 #include "diamondsquare.h"
 #include "tunnel.h" 
+#include "smoothheightmap.h"
 #define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -42,9 +43,12 @@ vector<float> normal3points(vector<vector<float> > &originPoints, int idx)
 	return res;
 }
 
+const float tunnelHeight = 0.28;
+
 void tunnel(double x, double y, double z, double ml, double mw, double mh, double tl, double th)
 {
 	int M = heightmap.size();
+	int H = pow(2, 6);
 	glPushMatrix();
 	glTranslated(x, y, z);
 	glScaled(ml, mw, mh);
@@ -53,12 +57,12 @@ void tunnel(double x, double y, double z, double ml, double mw, double mh, doubl
 	{
 		for(int j = 0; j < M; ++j)
 		{
-			if( i >= M / 4 && i <= M / 2 && heightmap[i][j] / M < .05)
+			if( i >= M / 4 && i <= M / 2 && heightmap[i][j] / H < tunnelHeight)
 			{
-				heightmap[i][j] = 0.05 * M;
+				heightmap[i][j] = tunnelHeight * H;
 			}	
 		}
-	}		
+	}
 
 	glColor3f(0, 0.8, 0);
 	for(int i = 0; i < M - 1; ++i)
@@ -69,11 +73,13 @@ void tunnel(double x, double y, double z, double ml, double mw, double mh, doubl
 		{
 			for(int n = 0; n < 2; ++n)
 			{
-				points[idx % 3][0] = 1.0 * (i + n) / M;
-				points[idx % 3][1] = heightmap[(i +n)][j] / M;
-				points[idx % 3][2] = 1.0 * j / M;	
+				points[idx % 3][0] = 1.0 * (i + n) / H;
+				points[idx % 3][1] = heightmap[(i +n)][j] / H;
+				points[idx % 3][2] = 1.0 * j / H;	
 				++idx;
 				vector<float> norm = normal3points(points, idx % 3);
+				if(i < M/ 4 || i > M / 2 || (points[0][1] >= tunnelHeight  && points[1][1] >= tunnelHeight  && points[2][1] >= tunnelHeight))
+				{
 				glBegin(GL_TRIANGLES);
 				for(int p = 0;idx > 1 && p < 3; ++p)
 				{
@@ -81,6 +87,7 @@ void tunnel(double x, double y, double z, double ml, double mw, double mh, doubl
 					glVertex3f(points[p][0], points[p][1], points[p][2]); 
 				}
 				glEnd();
+				}
 			}
 		}
 	}
