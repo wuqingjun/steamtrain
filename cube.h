@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-void cube(double l, double w, double h, Color color);
+void cube(double l, double w, double h, Color color, int faces, int normalDirection);
 
 #ifdef __cplusplus
 }

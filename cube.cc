@@ -16,7 +16,7 @@ extern float shinyvec[1];
 extern float white[4];
 extern float black[4];
 
-void cube(double l, double w, double h, Color color)
+void cube(double l, double w, double h, Color color, int faces = 0X3F, int normalDirection = 1)
 {
    //  Save transformation
    glPushMatrix();
@@ -28,66 +28,80 @@ void cube(double l, double w, double h, Color color)
    glScaled(l,w,h);
    //  Cube
    glBegin(GL_QUADS);
+   glColor3f(color.r,color.g,color.b);
+   
    //  Front
-   glColor3f(color.r,color.g,color.b);
-   glNormal3f(0, 0, 1); 
-   glVertex3f(-1,-1, 1);
-   glNormal3f(0, 0, 1); 
-   glVertex3f(+1,-1, 1);
-   glNormal3f(0, 0, 1); 
-   glVertex3f(+1,+1, 1);
-   glNormal3f(0, 0, 1); 
-   glVertex3f(-1,+1, 1);
+	if(faces & 0X01)
+	{
+		glNormal3f(0, 0, normalDirection); 
+		glVertex3f(-1,-1, 1);
+		glNormal3f(0, 0, normalDirection); 
+		glVertex3f(+1,-1, 1);
+		glNormal3f(0, 0, normalDirection); 
+		glVertex3f(+1,+1, 1);
+		glNormal3f(0, 0, normalDirection); 
+		glVertex3f(-1,+1, 1);
+	}
    //  Back
-   glColor3f(color.r,color.g,color.b);
-   glNormal3f(0, 0, -1); 
-   glVertex3f(+1,-1,-1);
-   glNormal3f(0, 0, -1); 
-   glVertex3f(-1,-1,-1);
-   glNormal3f(0, 0, -1); 
-   glVertex3f(-1,+1,-1);
-   glNormal3f(0, 0, -1); 
-   glVertex3f(+1,+1,-1);
-   //  Right
-   glColor3f(color.r,color.g,color.b);
-   glNormal3f(1, 0, 0); 
-   glVertex3f(+1,-1,+1);
-   glNormal3f(1, 0, 0); 
-   glVertex3f(+1,-1,-1);
-   glNormal3f(1, 0, 0); 
-   glVertex3f(+1,+1,-1);
-   glNormal3f(1, 0, 0); 
-   glVertex3f(+1,+1,+1);
+	if(faces & 0X02)
+	{
+		glNormal3f(0, 0, -normalDirection); 
+		glVertex3f(+1,-1,-1);
+		glNormal3f(0, 0, -normalDirection); 
+		glVertex3f(-1,-1,-1);
+		glNormal3f(0, 0, -normalDirection); 
+		glVertex3f(-1,+1,-1);
+		glNormal3f(0, 0, -normalDirection); 
+		glVertex3f(+1,+1,-1);
+	}
    //  Left
-   glColor3f(color.r,color.g,color.b);
-   glNormal3f(-1, 0, 0); 
-   glVertex3f(-1,-1,-1);
-   glNormal3f(-1, 0, 0); 
-   glVertex3f(-1,-1,+1);
-   glNormal3f(-1, 0, 0); 
-   glVertex3f(-1,+1,+1);
-   glNormal3f(-1, 0, 0); 
-   glVertex3f(-1,+1,-1);
+	if(faces & 0X04)
+	{
+		glNormal3f(-normalDirection, 0, 0); 
+		glVertex3f(-1,-1,-1);
+		glNormal3f(-normalDirection, 0, 0); 
+		glVertex3f(-1,-1,+1);
+		glNormal3f(-normalDirection, 0, 0); 
+		glVertex3f(-1,+1,+1);
+		glNormal3f(-normalDirection, 0, 0); 
+		glVertex3f(-1,+1,-1);
+	}
    //  Top
-   glColor3f(color.r,color.g,color.b);
-   glNormal3f(0, 1, 0); 
-   glVertex3f(-1,+1,+1);
-   glNormal3f(0, 1, 0); 
-   glVertex3f(+1,+1,+1);
-   glNormal3f(0, 1, 0); 
-   glVertex3f(+1,+1,-1);
-   glNormal3f(0, 1, 0); 
-   glVertex3f(-1,+1,-1);
+	if(faces & 0X08)
+	{
+		glNormal3f(0, normalDirection, 0); 
+		glVertex3f(-1,+1,+1);
+		glNormal3f(0, normalDirection, 0); 
+		glVertex3f(+1,+1,+1);
+		glNormal3f(0, normalDirection, 0); 
+		glVertex3f(+1,+1,-1);
+		glNormal3f(0, normalDirection, 0); 
+		glVertex3f(-1,+1,-1);
+	}
+   //  Right
+	if(faces & 0X10)
+	{
+		glNormal3f(normalDirection, 0, 0); 
+		glVertex3f(+1,-1,+1);
+		glNormal3f(normalDirection, 0, 0); 
+		glVertex3f(+1,-1,-1);
+		glNormal3f(normalDirection, 0, 0); 
+		glVertex3f(+1,+1,-1);
+		glNormal3f(normalDirection, 0, 0); 
+		glVertex3f(+1,+1,+1);
+	}
    //  Bottom
-   glColor3f(color.r,color.g,color.b);
-   glNormal3f(0, -1, 0); 
-   glVertex3f(-1,-1,-1);
-   glNormal3f(0, -1, 0); 
-   glVertex3f(+1,-1,-1);
-   glNormal3f(0, -1, 0); 
-   glVertex3f(+1,-1,+1);
-   glNormal3f(0, -1, 0); 
-   glVertex3f(-1,-1,+1);
+	if(faces & 0X20)
+	{
+		glNormal3f(0, -normalDirection, 0); 
+		glVertex3f(-1,-1,-1);
+		glNormal3f(0, -normalDirection, 0); 
+		glVertex3f(+1,-1,-1);
+		glNormal3f(0, -normalDirection, 0); 
+		glVertex3f(+1,-1,+1);
+		glNormal3f(0, -normalDirection, 0); 
+		glVertex3f(-1,-1,+1);
+	}
    //  End
    glEnd();
    //  Undo transofrmations

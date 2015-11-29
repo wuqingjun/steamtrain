@@ -1,7 +1,9 @@
+#include <algorithm>
 #include "color.h"
 #include "diamondsquare.h"
 #include "tunnel.h" 
 #include "smoothheightmap.h"
+#include "cube.h"
 #define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -9,6 +11,7 @@
 #include <GL/glut.h>
 #endif
 
+using namespace std;
 
 extern float rep;
 extern float shinyvec[1];
@@ -20,6 +23,21 @@ const double PI = 3.1415926;
 //
 // 
 //
+
+float maxof3(float a, float b, float c)
+{
+	return max(max(a, b), c);
+}
+
+float minof3(float a, float b, float c)
+{
+	return min(min(a, b), c);
+}
+
+float dist(float a, float b, float c)
+{
+	return maxof3(a, b, c) - minof3(a, b, c);
+}
 
 vector<float> normal3points(vector<vector<float> > &originPoints, int idx)
 {
@@ -43,7 +61,7 @@ vector<float> normal3points(vector<vector<float> > &originPoints, int idx)
 	return res;
 }
 
-const float tunnelHeight = 0.28;
+const float tunnelHeight = 0.24;
 
 void tunnel(double x, double y, double z, double ml, double mw, double mh, double tl, double th)
 {
@@ -57,7 +75,7 @@ void tunnel(double x, double y, double z, double ml, double mw, double mh, doubl
 	{
 		for(int j = 0; j < M; ++j)
 		{
-			if( i >= M / 4 && i <= M / 2 && heightmap[i][j] / H < tunnelHeight)
+			if( i >= 0.4 * M && i <= 0.6 * M && heightmap[i][j] / H < tunnelHeight)
 			{
 				heightmap[i][j] = tunnelHeight * H;
 			}	
@@ -78,18 +96,29 @@ void tunnel(double x, double y, double z, double ml, double mw, double mh, doubl
 				points[idx % 3][2] = 1.0 * j / H;	
 				++idx;
 				vector<float> norm = normal3points(points, idx % 3);
-				if(i < M/ 4 || i > M / 2 || (points[0][1] >= tunnelHeight  && points[1][1] >= tunnelHeight  && points[2][1] >= tunnelHeight))
+				if(i >= 0.4 * M && i <= 0.6 * M)  
 				{
+					points[0][1] = max(points[0][1], tunnelHeight);	
+					points[1][1] = max(points[1][1], tunnelHeight);	
+					points[2][1] = max(points[2][1], tunnelHeight);	
+				}
+				
 				glBegin(GL_TRIANGLES);
-				for(int p = 0;idx > 1 && p < 3; ++p)
+				for(int p = 0;idx > 1 && p < 3 && dist(points[0][0], points[1][0], points[2][0]) * H < 0.25 * M; ++p)
 				{
 					glNormal3f(norm[0], norm[1], norm[2]);
 					glVertex3f(points[p][0], points[p][1], points[p][2]); 
 				}
 				glEnd();
-				}
 			}
 		}
 	}
+
+	glPushMatrix();
+	glTranslated(0.5 * M / H, tunnelHeight / 2,  0.5 * M / H); 
+	cube(0.099 * M / H, 0.5 * tunnelHeight, 0.5 * M / H, Color(0, 0.8,0, 1), 0X3C, 1); 
+	cube(0.097 * M / H, 0.498 * tunnelHeight, 0.498 * M / H, Color(1, 0,0, 1), 0X3C, -1); 
+	glPopMatrix();
+
 	glPopMatrix();
 }

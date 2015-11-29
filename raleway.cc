@@ -20,13 +20,13 @@ void raleway(double l, double w, double h, double space,  Color color)
 {
 	glPushMatrix();
 	glScaled(1, w, h);	
-	cube(l, 0.15, 0.1, color);
+	cube(l, 0.15, 0.1, color, 0X3F, 1);
 	glTranslated(0, 0, 1.4);
-	cube(l, 0.15, 0.1, color);
+	cube(l, 0.15, 0.1, color, 0X3F, 1);
 	glTranslated(-l/2, -0.2, -0.7);
 	for(double bl = 0.0; bl <= l; bl += 0.4)
 	{
-		cube(0.4, 0.2, 1.2, Color(1, 0, 0, 1));		
+		cube(0.4, 0.2, 1.2, Color(1, 0, 0, 1), 0X3F, 1);		
 		glTranslated(1, 0, 0);
 	}	
 	glPopMatrix();	

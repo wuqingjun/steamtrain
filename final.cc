@@ -39,7 +39,7 @@ double upz = -1.0;
 double fov = 120.0;
 double ph = 0; //2;
 double th = 0; //102;
-double dim = 250;
+double dim = 500;
 double windowsize = 450;
 int mode = 0;
 int smooth = 0;
@@ -62,6 +62,11 @@ double  ey = 0;
 const int H = 6;
 const int M = pow(2, H) + 1;
 vector<vector<float> > heightmap(M, vector<float>(M, 0.0));
+vector<vector<float> > mountainheightmap(M, vector<float>(M, 0.0));
+vector<vector<float> > mountainheightmap2(M, vector<float>(M, 0.0));
+vector<vector<float> > mountainheightmap3(M, vector<float>(M, 0.0));
+vector<vector<float> > mountainheightmap4(M, vector<float>(M, 0.0));
+vector<vector<float> > mountainheightmap5(M, vector<float>(M, 0.0));
 float white[] = {1, 1, 1, 1};
 float black[] = {0, 0, 0, 1};
 
@@ -79,9 +84,9 @@ void display(void)
 
     if(mode)
     {
-		ex = 2.5 * dim * Sin(ph);
-		ez = 1.8 * dim * Cos(ph);
-		ey =  dim * Sin(th); 
+		ex = 3 * dim * Sin(ph);
+		ez = 5.0 * dim * Cos(ph);
+		ey = 2.5* dim * Sin(th); 
     	gluLookAt(ex, ey, ez, 0, 0, 0, upx, upy, upz);
     }
     else
@@ -91,13 +96,20 @@ void display(void)
     }    
 
 	glTranslated(0, -200,0);
-	sun(300, 400, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
+	sun(300, 600, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
 	train(0, 0, 0, 100, 100, 100);
 	glPushMatrix();
 	glScaled(100, 100, 100);
 	glTranslated(0, -0.82, -0.5);
-	//mountain(0, 0, 1.5, 4, 4, 4);	
-	tunnel(0, -0.1, 1.5, 8, 8, 8, 2, 2);	
+	glPushMatrix();
+	glRotated(90, 0, 1, 0);
+	tunnel(-5.1, -0.1, -2.0, 9, 9, 9, 2, 2);	
+	mountain(mountainheightmap, -14, -0.1, 0, 8, 8, 8);	
+	mountain(mountainheightmap2, 9, -0.1, 7, 8, 8, 8);	
+	mountain(mountainheightmap3, 7, -0.1, 0, 8, 8, 8);	
+	mountain(mountainheightmap4, -20, -0.1, 0, 8, 8, 8);	
+	mountain(mountainheightmap5, -15, -0.1, -10, 8, 8, 8);	
+	glPopMatrix();
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glRotated(30, 0, 1, 0);
 	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
@@ -251,8 +263,18 @@ void setupRC()
 
 int main(int argc, char** argv)
 {
-	diamondsquare(heightmap, 0.95, M, 10, 0, 0, M - 1, M - 1); 	
-	smoothheightmap(heightmap, 0.9, 20);
+	diamondsquare(heightmap, 0.95, M, 9, 0, 0, M - 1, M - 1); 	
+	smoothheightmap(heightmap, 0.9, 23);
+	diamondsquare(mountainheightmap, 0.95, M, 5, 0, 0, M - 1, M - 1); 	
+	smoothheightmap(mountainheightmap, 0.9, 23);
+	diamondsquare(mountainheightmap2, 0.95, M, 5, 0, 0, M - 1, M - 1); 	
+	smoothheightmap(mountainheightmap2, 0.9, 23);
+	diamondsquare(mountainheightmap3, 0.95, M, 5, 0, 0, M - 1, M - 1); 	
+	smoothheightmap(mountainheightmap3, 0.9, 23);
+	diamondsquare(mountainheightmap4, 0.95, M, 5, 0, 0, M - 1, M - 1); 	
+	smoothheightmap(mountainheightmap4, 0.9, 23);
+	diamondsquare(mountainheightmap5, 0.95, M, 5, 0, 0, M - 1, M - 1); 	
+	smoothheightmap(mountainheightmap5, 0.9, 23);
     glutInitWindowSize(windowsize, windowsize);
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

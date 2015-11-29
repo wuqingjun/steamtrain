@@ -12,7 +12,7 @@
 extern float rep;
 extern float shinyvec[1];
 extern unsigned int texture[20];
-extern vector<vector<float> > heightmap;
+//extern vector<vector<float> > heightmap;
 
 const double PI = 3.1415926;
 
@@ -42,7 +42,7 @@ vector<float> normal(vector<vector<float> > &originPoints, int idx)
 	return res;
 }
 
-void mountain(double x, double y, double z, double l, double w, double h)
+void mountain(vector<vector<float> > &heightmap, double x, double y, double z, double l, double w, double h)
 {
 	int M = heightmap.size();
 	glPushMatrix();

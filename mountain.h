@@ -13,7 +13,7 @@ extern "C" {
 //
 // draw the cylinder. for example the stick holding the bubble.
 //
-void mountain(double x, double y, double z, double l, double w, double h);
+void mountain(vector<vector<float> > &heightmap, double x, double y, double z, double l, double w, double h);
 
 #ifdef __cplusplus
 }   
