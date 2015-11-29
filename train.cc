@@ -49,7 +49,7 @@ void train(double x, double y, double z, double scaleX, double scaleY, double sc
 	glTranslated(0, -0.4, 0);
 	cylinder(0.3333 + Tan(60) * 0.1, 0.3, Color(0.02, 0.02, 0.02, 1));
 	glTranslated(0.1, -0.3, 0);
-	cube(0.3333 + Tan(60) * 0.2, 0.6, 0.3333 + Tan(60) * 0.1, Color(0.02, 0.02, 0.02, 1));
+	cube(0.3333 + Tan(60) * 0.2, 0.6, 0.3333 + Tan(60) * 0.1, Color(0.02, 0.02, 0.02, 1), 0X3F, 1);
 	glTranslated(0.37, -0.6, 0);
 	glRotated(60, 0,1, 0);
 	pile(0.6, 1.2, 120, Color(1,0,0,1));
@@ -71,7 +71,7 @@ void train(double x, double y, double z, double scaleX, double scaleY, double sc
 
 	glPushMatrix();
 	glTranslated(0.4, -0.3, 0);
-	cube(0.4, 0.1, 0.2, colorBlack);
+	cube(0.4, 0.1, 0.2, colorBlack, 0X3F, 1);
 	glPopMatrix();
 	
 	glPushMatrix();
@@ -83,7 +83,7 @@ void train(double x, double y, double z, double scaleX, double scaleY, double sc
 	glPopMatrix();
 	glPushMatrix();
 	glTranslated(0.6, -0.4, 0);
-	cube(0.65, 0.1, 0.6, colorBlack);
+	cube(0.65, 0.1, 0.6, colorBlack, 0X3F, 1);
 	glRotated(90, 1, 0, 0);
 
 	glTranslated(-0.2, -0.6, 0.1); 
