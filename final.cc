@@ -103,16 +103,15 @@ void display(void)
 	glTranslated(0, -0.82, -0.5);
 	glPushMatrix();
 	glRotated(90, 0, 1, 0);
-	tunnel(-5.1, -0.1, -2.0, 9, 9, 9, 2, 2);	
-	mountain(mountainheightmap, -14, -0.1, 0, 8, 8, 8);	
-	mountain(mountainheightmap2, 9, -0.1, 7, 8, 8, 8);	
-	mountain(mountainheightmap3, 7, -0.1, 0, 8, 8, 8);	
-	mountain(mountainheightmap4, -20, -0.1, 0, 8, 8, 8);	
-	mountain(mountainheightmap5, -15, -0.1, -10, 8, 8, 8);	
+	tunnel(-5.1, -0.1, -10.5, 9, 9, 9, 2, 2);	
+	mountain(mountainheightmap3, 3.9, -0.1, -12, 8, 8, 8);	
+	mountain(mountainheightmap4, -13, -0.1, 3, 8, 8, 8);	
+	mountain(mountainheightmap5, 1, -0.1, -1, 8, 8, 8);	
 	glPopMatrix();
-	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
+	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
+	glTranslated(9, 0, 0);
 	glRotated(30, 0, 1, 0);
-	raleway(20, .3, .7, 0.3, Color(0, 0, 0, 1));
+	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glPopMatrix();
 
     ErrCheck("in display...");
