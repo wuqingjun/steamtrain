@@ -27,6 +27,7 @@
 #include "mountain.h"
 #include "tunnel.h"
 #include "sun.h"
+#include "ground.h"
 
 using namespace std;
 double axeslen = 95;
@@ -95,7 +96,7 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	glTranslated(0, -200,0);
+	glTranslated(0, -400,0);
 	sun(300, 600, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
 	train(0, 0, 0, 100, 100, 100);
 	glPushMatrix();
@@ -103,10 +104,11 @@ void display(void)
 	glTranslated(0, -0.82, -0.5);
 	glPushMatrix();
 	glRotated(90, 0, 1, 0);
-	tunnel(-5.1, -0.1, -10.5, 9, 9, 9, 2, 2);	
-	mountain(mountainheightmap3, 3.9, -0.1, -12, 8, 8, 8);	
-	mountain(mountainheightmap4, -13, -0.1, 3, 8, 8, 8);	
-	mountain(mountainheightmap5, 1, -0.1, -1, 8, 8, 8);	
+	tunnel(-5.1, -0.15, -10.5, 9, 9, 9, 2, 2);	
+	mountain(mountainheightmap3, 3.9, -0.15, -12, 8, 8, 8);	
+	mountain(mountainheightmap4, -13, -0.15, 3, 8, 8, 8);	
+	mountain(mountainheightmap5, 1, -0.15, -1, 8, 8, 8);	
+	ground(0, -0.1, 0, 100, 100, Color(0, 0.8, 0, 1));
 	glPopMatrix();
 	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glTranslated(9, 0, 0);
