@@ -40,8 +40,8 @@ double upz = -1.0;
 double fov = 120.0;
 double ph = 0; //2;
 double th = 0; //102;
-double dim = 500;
-double windowsize = 450;
+double dim = 700;
+double windowsize = 650;
 int mode = 0;
 int smooth = 0;
 int ambient = 30;
@@ -96,8 +96,8 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	glTranslated(0, -400,0);
 	sun(300, 600, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
+	glTranslated(0, -400,0);
 	train(0, 0, 0, 100, 100, 100);
 	glPushMatrix();
 	glScaled(100, 100, 100);
@@ -108,7 +108,7 @@ void display(void)
 	mountain(mountainheightmap3, 3.9, -0.15, -12, 8, 8, 8);	
 	mountain(mountainheightmap4, -13, -0.15, 3, 8, 8, 8);	
 	mountain(mountainheightmap5, 1, -0.15, -1, 8, 8, 8);	
-	ground(0, -0.1, 0, 100, 100, Color(0, 0.8, 0, 1));
+	ground(0, -0.1, 0, 400, 400, Color(0, 0.8, 0, 1));
 	glPopMatrix();
 	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glTranslated(9, 0, 0);

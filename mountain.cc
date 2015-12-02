@@ -12,8 +12,9 @@
 extern float rep;
 extern float shinyvec[1];
 extern unsigned int texture[20];
-//extern vector<vector<float> > heightmap;
-
+extern float shinyvec[1];
+extern float white[4];
+extern float black[4];
 const double PI = 3.1415926;
 
 //
@@ -46,6 +47,9 @@ void mountain(vector<vector<float> > &heightmap, double x, double y, double z, d
 {
 	int M = heightmap.size();
 	glPushMatrix();
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS, shinyvec);
+    glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR, white);
+    glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, black);
 	glTranslated(x, y, z);
 	glScaled(l, w, h);
 	glColor3f(0, 0.8, 0);
@@ -60,8 +64,8 @@ void mountain(vector<vector<float> > &heightmap, double x, double y, double z, d
 				points[idx % 3][0] = 1.0 * (i + n) / M;
 				points[idx % 3][1] = heightmap[(i +n)][j] / M;
 				points[idx % 3][2] = 1.0 * j / M;	
-				++idx;
 				vector<float> norm = normal(points, idx % 3);
+				++idx;
 				glBegin(GL_TRIANGLES);
 				for(int p = 0;idx > 1 && p < 3; ++p)
 				{

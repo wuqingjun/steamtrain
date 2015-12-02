@@ -17,6 +17,9 @@ extern float rep;
 extern float shinyvec[1];
 extern unsigned int texture[20];
 extern vector<vector<float> > heightmap;
+extern float shinyvec[1];
+extern float white[4];
+extern float black[4];
 
 const double PI = 3.1415926;
 
@@ -68,6 +71,11 @@ void tunnel(double x, double y, double z, double ml, double mw, double mh, doubl
 	int M = heightmap.size();
 	int H = pow(2, 6);
 	glPushMatrix();
+	glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS, shinyvec);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, black);
 	glTranslated(x, y, z);
 	glScaled(ml, mw, mh);
 

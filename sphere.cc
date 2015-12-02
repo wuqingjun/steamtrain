@@ -38,7 +38,7 @@ void sphere(double x,
     {
     	glColor3f(1,1, 1);
 		glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, white);
-    	float bubbleposition[3] = {float(0), float(0), float(0)};
+    	float bubbleposition[3] = {float(x), float(y), float(z)};
     	glLightfv(lightnum, GL_POSITION, bubbleposition);
     }
     else
