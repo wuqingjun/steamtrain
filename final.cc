@@ -50,11 +50,15 @@ int specular  =   0;
 int shininess =   0;  
 float shinyvec[1] = { 0.0};
 int local = 1;
-unsigned int texture[20];
 float rep = 1.0;
-int texturebase = 6;
 float lh = 30;
 int animation = 1;
+int ntexWood = -1;
+int ntexGrass = -1;
+int ntexMetal = -1;
+int ntexBricks = -1;
+int ntexRock = -1;
+int ntexMountain = -1;
 float h2 = 0;
 
 double	ex = 0;
@@ -85,9 +89,9 @@ void display(void)
 
     if(mode)
     {
-		ex = 3 * dim * Sin(ph);
-		ez = 5.0 * dim * Cos(ph);
-		ey = 2.5* dim * Sin(th); 
+		ex = 1 * dim * Sin(ph);
+		ez = 1.0 * dim * Cos(ph);
+		ey = 1.5* dim * Sin(th); 
     	gluLookAt(ex, ey, ez, 0, 0, 0, upx, upy, upz);
     }
     else
@@ -96,8 +100,8 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	sun(300, 600, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
-	glTranslated(0, -400,0);
+	sun(300, 400, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
+//	glTranslated(0, -400,0);
 	train(0, 0, 0, 100, 100, 100);
 	glPushMatrix();
 	glScaled(100, 100, 100);
@@ -108,7 +112,7 @@ void display(void)
 	mountain(mountainheightmap3, 3.9, -0.15, -12, 8, 8, 8);	
 	mountain(mountainheightmap4, -13, -0.15, 3, 8, 8, 8);	
 	mountain(mountainheightmap5, 1, -0.15, -1, 8, 8, 8);	
-	ground(0, -0.1, 0, 400, 400, Color(0, 0.8, 0, 1));
+	ground(0, -0.1, 0, 400, 400, Color(0, 0.5, 0, 1));
 	glPopMatrix();
 	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glTranslated(9, 0, 0);
@@ -211,14 +215,6 @@ void keyboard(unsigned char ch, int x, int y)
     {
 		rep += 0.1;
     }
-    else if(ch == 'T')
-    {
-		texturebase += 1;
-    }
-    else if(ch == 't')
-    {
-		texturebase -= 1;
-    }
     else if(ch == 'x')
     {
 		upx = 1; upy = 0; upz = 0;
@@ -262,6 +258,16 @@ void setupRC()
 }
 
 
+void loadTexture()
+{
+	ntexWood = LoadTexBMP("./images/wood2.bmp");
+	ntexGrass = LoadTexBMP("./images/grass.bmp");
+	ntexMetal = LoadTexBMP("./images/metal.bmp");
+	ntexBricks = LoadTexBMP("./images/brick.bmp");
+	ntexRock = LoadTexBMP("./images/redrock.bmp");
+	ntexMountain = LoadTexBMP("./images/mountain.bmp");
+}
+
 int main(int argc, char** argv)
 {
 	diamondsquare(heightmap, 0.95, M, 9, 0, 0, M - 1, M - 1); 	
@@ -285,6 +291,7 @@ int main(int argc, char** argv)
     glutSpecialFunc(specialKeys);
     glutKeyboardFunc(keyboard);
     glutIdleFunc(idle);
+	loadTexture();
 
     setupRC();
     glutMainLoop();
