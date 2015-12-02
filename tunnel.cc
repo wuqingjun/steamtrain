@@ -20,7 +20,7 @@ extern vector<vector<float> > heightmap;
 extern float shinyvec[1];
 extern float white[4];
 extern float black[4];
-
+extern int ntexBricks;
 const double PI = 3.1415926;
 
 //
@@ -124,8 +124,8 @@ void tunnel(double x, double y, double z, double ml, double mw, double mh, doubl
 
 	glPushMatrix();
 	glTranslated(0.5 * M / H, tunnelHeight / 2,  0.5 * M / H); 
-	cube(0.099 * M / H, 0.5 * tunnelHeight, 0.5 * M / H, Color(0, 0.8,0, 1), 0X3C, 1); 
-	cube(0.097 * M / H, 0.498 * tunnelHeight, 0.498 * M / H, Color(1, 0,0, 1), 0X3C, -1); 
+	cube(0.099 * M / H, 0.5 * tunnelHeight, 0.5 * M / H, Color(0, 0.8,0, 1), 0X3C, 1, ntexBricks); 
+	cube(0.097 * M / H, 0.498 * tunnelHeight, 0.498 * M / H, Color(1, 0,0, 1), 0X3C, -1, ntexBricks); 
 	glPopMatrix();
 
 	glPopMatrix();

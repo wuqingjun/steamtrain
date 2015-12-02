@@ -49,10 +49,14 @@ void sphere(double x,
     if(ntex >= 0)
     {
     	glEnable(GL_TEXTURE_2D);
-    	glBindTexture(GL_TEXTURE_2D,texture[ntex]);
+    	glBindTexture(GL_TEXTURE_2D, ntex);
     	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
      }
+	else
+	{	
+    	glDisable(GL_TEXTURE_2D);
+	}
 
     for(int j = startangle; j <= endangle; j += d)
     {
