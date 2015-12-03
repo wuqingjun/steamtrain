@@ -66,12 +66,13 @@ double	ez = 0;
 double  ey = 0;
 const int H = 6;
 const int M = pow(2, H) + 1;
-vector<vector<float> > heightmap(M, vector<float>(M, 0.0));
+vector<vector<float> > heightmap(pow(2, 6) + 1, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap2(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap3(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap4(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap5(M, vector<float>(M, 0.0));
+vector<vector<float> > mountainheightmap6(M, vector<float>(M, 0.0));
 float white[] = {1, 1, 1, 1};
 float black[] = {0, 0, 0, 1};
 
@@ -82,7 +83,6 @@ void display(void)
     glLoadIdentity();
 	glShadeModel(smooth ? GL_SMOOTH : GL_FLAT); 
 	glEnable(GL_NORMALIZE);
-    glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,local);
@@ -101,7 +101,6 @@ void display(void)
     }    
 
 	sun(300, 400, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
-//	glTranslated(0, -400,0);
 	train(0, 0, 0, 100, 100, 100);
 	glPushMatrix();
 	glScaled(100, 100, 100);
@@ -109,17 +108,20 @@ void display(void)
 	glPushMatrix();
 	glRotated(90, 0, 1, 0);
 	tunnel(-5.1, -0.15, -10.5, 9, 9, 9, 2, 2);	
-	mountain(mountainheightmap3, 3.9, -0.15, -12, 8, 8, 8);	
-	mountain(mountainheightmap4, -13, -0.15, 3, 8, 8, 8);	
-	mountain(mountainheightmap5, 1, -0.15, -1, 8, 8, 8);	
-	ground(0, -0.1, 0, 400, 400, Color(0, 0.5, 0, 1));
+	mountain(mountainheightmap3, 3.9, -0.15, -12, 9, 9, 5);	
+	mountain(mountainheightmap4, -13, -0.15, 3, 9, 9, 5);	
+	mountain(mountainheightmap5, 1, -0.15, -1, 9, 9, 5);	
+	//mountain(mountainheightmap5, -20, -0.15, -20, 40, 40, 1);	
+	ground(0, -0.1, 0, 400, 400, Color(0.8, 0.6, 0.4, 1));
 	glPopMatrix();
 	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glTranslated(9, 0, 0);
 	glRotated(30, 0, 1, 0);
 	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glPopMatrix();
-
+	glWindowPos2d(5, 5);	
+	Print("rep: %f", rep);
+	
     ErrCheck("in display...");
     glFlush();
     glutSwapBuffers();
@@ -282,6 +284,8 @@ int main(int argc, char** argv)
 	smoothheightmap(mountainheightmap4, 0.9, 23);
 	diamondsquare(mountainheightmap5, 0.95, M, 5, 0, 0, M - 1, M - 1); 	
 	smoothheightmap(mountainheightmap5, 0.9, 23);
+	diamondsquare(mountainheightmap6, 0.95, M, 9, 0, 0, M - 1, M - 1); 	
+	smoothheightmap(mountainheightmap6, 0.9, 23);
     glutInitWindowSize(windowsize, windowsize);
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

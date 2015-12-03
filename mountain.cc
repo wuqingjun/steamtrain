@@ -8,7 +8,6 @@
 #include <GL/glut.h>
 #endif
 
-
 extern float rep;
 extern float shinyvec[1];
 extern float shinyvec[1];
@@ -47,19 +46,20 @@ vector<float> normal(vector<vector<float> > &originPoints, int idx)
 
 void mountain(vector<vector<float> > &heightmap, double x, double y, double z, double l, double w, double h)
 {
+	int repl = 1;
 	int M = heightmap.size();
 	glPushMatrix();
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS, shinyvec);
     glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR, white);
     glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, black);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, ntexMountain);
+	glBindTexture(GL_TEXTURE_2D, ntexRock);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 
 	glTranslated(x, y, z);
-	glScaled(l, w, h);
-	glColor3f(0.3, 0.8, 0.6);
+	glScaled(l, h, w);
+	glColor3f(0.8, 0.6, 0.4);
 	for(int i = 0; i < M - 1; ++i)
 	{
 		vector<vector<float> > points(3, vector<float>(3, 0));
@@ -77,7 +77,7 @@ void mountain(vector<vector<float> > &heightmap, double x, double y, double z, d
 				for(int p = 0;idx > 1 && p < 3; ++p)
 				{
 					glNormal3f(norm[0], norm[1], norm[2]);
-					glTexCoord2f( rep * points[p][0],  rep * points[p][2] );
+					glTexCoord2f( rep * points[p][0],  repl * points[p][2] );
 					glVertex3f(points[p][0], points[p][1], points[p][2]); 
 				}
 				glEnd();
