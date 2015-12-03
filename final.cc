@@ -59,6 +59,7 @@ int ntexMetal = -1;
 int ntexBricks = -1;
 int ntexRock = -1;
 int ntexMountain = -1;
+int ntexDesert = 1;
 float h2 = 0;
 
 double	ex = 0;
@@ -107,12 +108,16 @@ void display(void)
 	glTranslated(0, -0.82, -0.5);
 	glPushMatrix();
 	glRotated(90, 0, 1, 0);
-	tunnel(-5.1, -0.15, -10.5, 9, 9, 9, 2, 2);	
-	mountain(mountainheightmap3, 3.9, -0.15, -12, 9, 9, 5);	
-	mountain(mountainheightmap4, -13, -0.15, 3, 9, 9, 5);	
-	mountain(mountainheightmap5, 1, -0.15, -1, 9, 9, 5);	
-	//mountain(mountainheightmap5, -20, -0.15, -20, 40, 40, 1);	
-	ground(0, -0.1, 0, 400, 400, Color(0.8, 0.6, 0.4, 1));
+	tunnel(-6.5, -0.15, -10.5, 12, 12, 9, 2, 2);	
+	mountain(mountainheightmap3, 5.4, -0.15, -12, 12, 12, 8);	
+	glPushMatrix();
+	glRotatef(30, 0, 1, 0);
+	mountain(mountainheightmap4, -20.5, -0.15, -10, 15, 15, 8);	
+	mountain(mountainheightmap5, -20.5, -0.15, -23, 15, 15, 5);	
+	glPopMatrix();
+	mountain(mountainheightmap5, 1, -0.15, -2.5, 12, 12, 5);	
+	mountain(mountainheightmap3, 1, -0.15, -28.5, 18, 18, 9);	
+	ground(0, -0.1, 0, 400, 400, Color(0.9, 0.3, 0.3, 1));
 	glPopMatrix();
 	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glTranslated(9, 0, 0);
@@ -137,7 +142,7 @@ void project()
     }
     else
     {
-    	glOrtho(-1.5 * dim * asp, 1.5 * dim * asp, -1.5 * dim, 1.5 * dim , 1.5 * dim, -1.5 * dim);
+    	glOrtho(-2.5 * dim * asp, 2.5 * dim * asp, -2.5 * dim, 2.5 * dim , 2.5 * dim, -2.5 * dim);
     }
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -266,8 +271,9 @@ void loadTexture()
 	ntexGrass = LoadTexBMP("./images/grass.bmp");
 	ntexMetal = LoadTexBMP("./images/metal.bmp");
 	ntexBricks = LoadTexBMP("./images/brick.bmp");
-	ntexRock = LoadTexBMP("./images/redrock.bmp");
+	ntexRock = LoadTexBMP("./images/rock1.bmp");
 	ntexMountain = LoadTexBMP("./images/mountain.bmp");
+	ntexDesert = LoadTexBMP("./images/desert2.bmp");
 }
 
 int main(int argc, char** argv)

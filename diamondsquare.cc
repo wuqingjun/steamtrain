@@ -46,9 +46,9 @@ void diamondsquare(vector<vector<float> > &res, float rate, int M, int H, int a,
 			minN = min(res[a][b], res[m][n], res[a][d], (3 * a >= 2 * c ? res[3 * a / 2 - c / 2][n] : 0));
 			av = avg(res[a][b], res[m][n], res[a][d], (3 * a >= 2 * c ? res[3 * a / 2 - c / 2][n] : 0));
 			int temp = 0;
-			if(a < 4 || a > M - 5)
+			if(a < 8 || a > M - 8 || n < 8 || n > M - 8)
 			{
-				temp = random(0, max(H / 4, 1)) * rate * rate;
+				temp = random(0, max(H / 4, 2)) * pow(rate, 3);
 			}
 			else
 			{
@@ -63,9 +63,9 @@ void diamondsquare(vector<vector<float> > &res, float rate, int M, int H, int a,
 			minN = min(res[a][b], res[m][n], res[c][b], (3 * b >= 2 * d ? res[m][3 * b / 2 - d / 2] : 0));
 			av = avg(res[a][b], res[m][n], res[c][b], (3 * b >= 2 * d ? res[m][3 * b / 2 - d / 2] : 0));
 			int temp = 0;
-			if(b < 4 || b > M - 5)
+			if(b < 8 || b > M - 8 || m < 8 || m > M - 8)
 			{
-				temp = random(0, max(H / 4, 1)) * rate * rate;
+				temp = random(0, max(H / 4, 2)) * pow(rate, 3); 
 			}
 			else
 			{
@@ -80,9 +80,9 @@ void diamondsquare(vector<vector<float> > &res, float rate, int M, int H, int a,
 			minN = min(res[c][b], res[m][n], res[c][d], (a + 2 * (int)res.size() > 3 * c ? res[3 * c / 2 - a / 2][n] : 0));
 			av = avg(res[c][b], res[m][n], res[c][d], (a + 2 * (int)res.size() > 3 * c ? res[3 * c / 2 - a / 2][n] : 0));
 			int temp = 0;
-			if(c < 4 || c > M - 5)
+			if(c < 8 || c > M - 8 || n < 8 || n > M - 8)
 			{
-				temp = random(0, max(H / 4, 1)) * rate * rate;
+				temp = random(0, max(H / 4, 2)) * pow(rate, 3); 
 			}
 			else
 			{
@@ -97,9 +97,9 @@ void diamondsquare(vector<vector<float> > &res, float rate, int M, int H, int a,
 			minN = min(res[c][b], res[m][n], res[c][d], (b + 2 * (int)res.size() > 3 * d ? res[3 * d / 2 - b / 2][n] : 0));
 			av = avg(res[c][b], res[m][n], res[c][d], (b + 2 * (int)res.size() > 3 * d ? res[3 * d / 2 - b / 2][n] : 0));
 			int temp = 0;
-			if(d < 4 || d > M - 5)
+			if(d < 8 || d > M - 8 || m < 8 || m > M - 8)
 			{
-				temp = random(0, max(H / 4, 1)) * rate * rate;
+				temp = random(0, max(H / 4, 1)) * pow(rate, 3); 
 			}
 			else
 			{
