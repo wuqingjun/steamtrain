@@ -20,7 +20,6 @@ extern float white[4];
 void sun(double x, double y, double z, double r, Color color, int lightnum)
 {
 	glEnable(GL_LIGHTING);	
-    glEnable(lightnum);
 	float Ambient[]   = {float(0.01) * ambient , float(0.01) * ambient , float(0.01) *ambient ,1.0};
     float Diffuse[]   = {float(0.01) * diffuse , float(0.01) * diffuse , float(0.01) *diffuse ,1.0};
     float Specular[]  = {float(0.01) * specular, float(0.01) * specular, float(0.01) *specular,1.0};
@@ -28,7 +27,13 @@ void sun(double x, double y, double z, double r, Color color, int lightnum)
     glLightfv(lightnum, GL_DIFFUSE,  Diffuse);
     glLightfv(lightnum, GL_SPECULAR, Specular);
 	float bubbleposition[3] = {float(x), float(y), float(z)};
-    glLightfv(GL_LIGHT0, GL_POSITION, bubbleposition);
+    glLightfv(lightnum, GL_POSITION, bubbleposition);
+    glLightf(lightnum, GL_SPOT_CUTOFF, 50);
+	float direction[3] = {0, -1, 0};
+    glLightfv(lightnum, GL_SPOT_DIRECTION, direction);
+    glLightf(lightnum, GL_SPOT_EXPONENT, 1);
+    glLightf(lightnum, GL_LINEAR_ATTENUATION, 5);
+	glEnable(lightnum);
 	glPushMatrix();
 	sphere(x, y, z, r, 0, 180, color, true, lightnum, -1);
 	glPopMatrix();

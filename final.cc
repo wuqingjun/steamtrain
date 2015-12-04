@@ -34,9 +34,9 @@ double axeslen = 95;
 double asp = 1.0;
 #define PI 3.14159265
 
-double upx = 0;
-double upy = 0;
-double upz = -1.0;
+int upx = 0;
+int upy = 0;
+int upz = -1;
 double fov = 120.0;
 double ph = 0; //2;
 double th = 0; //102;
@@ -62,9 +62,12 @@ int ntexMountain = -1;
 int ntexDesert = 1;
 float h2 = 0;
 
-double	ex = 0;
+double	ex = 200;
 double	ez = 0;
-double  ey = 0;
+double  ey = 200;
+double atx = 0;
+double aty = 0;
+double atz = 0;
 const int H = 6;
 const int M = pow(2, H) + 1;
 vector<vector<float> > heightmap(pow(2, 6) + 1, vector<float>(M, 0.0));
@@ -90,10 +93,10 @@ void display(void)
 
     if(mode)
     {
-		ex = 1 * dim * Sin(ph);
-		ez = 1.0 * dim * Cos(ph);
-		ey = 1.5* dim * Sin(th); 
-    	gluLookAt(ex, ey, ez, 0, 0, 0, upx, upy, upz);
+		//ex = 120 + ; //1 * dim * Sin(ph);
+		//ez = 0; //1.0 * dim * Cos(ph);
+		//ey = 50; //1.5* dim * Sin(th); 
+    	gluLookAt(ex, ey, ez, atx, aty, atz, upx, upy, upz);
     }
     else
     {
@@ -136,14 +139,7 @@ void project()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    if(mode)
-    {
-		gluPerspective(fov, asp, 1000, 0.001);
-    }
-    else
-    {
-    	glOrtho(-2.5 * dim * asp, 2.5 * dim * asp, -2.5 * dim, 2.5 * dim , 2.5 * dim, -2.5 * dim);
-    }
+    glOrtho(-2.5 * dim * asp, 2.5 * dim * asp, -2.5 * dim, 2.5 * dim , 2.5 * dim, -2.5 * dim);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     ErrCheck("project...");
@@ -162,6 +158,8 @@ void changeSize(GLsizei w, GLsizei h)
 
 
 void specialKeys( int key, int x, int y ) {
+	if(mode == 0)
+	{
     if (key == GLUT_KEY_RIGHT)
         th += 3;
     else if (key == GLUT_KEY_LEFT)
@@ -170,7 +168,34 @@ void specialKeys( int key, int x, int y ) {
        	ph += 3;
     else if (key == GLUT_KEY_DOWN)
         ph -= 3;
-    
+	}
+	else
+	{
+		if (key == GLUT_KEY_RIGHT)
+			ex += 10;
+        else if (key == GLUT_KEY_LEFT)
+            ex -= 10;
+        else if (key == GLUT_KEY_UP)
+            ez -= 10;
+        else if (key == GLUT_KEY_DOWN)
+            ez += 10;
+        else if(key == GLUT_KEY_PAGE_UP)
+            ey += 10;
+        else if(key == GLUT_KEY_PAGE_DOWN)
+            ey -= 10;
+        if(mode == 2)
+        {// third person view
+            if (key == GLUT_KEY_RIGHT)
+                atx += 10;
+            else if (key == GLUT_KEY_LEFT)
+                atx -= 10;
+            else if (key == GLUT_KEY_UP)
+                atz -= 10;
+            else if (key == GLUT_KEY_DOWN)
+                atz += 10;
+        }		
+	}
+ 
     project();
     glutPostRedisplay();
 }
@@ -224,15 +249,15 @@ void keyboard(unsigned char ch, int x, int y)
     }
     else if(ch == 'x')
     {
-		upx = 1; upy = 0; upz = 0;
+		upx = upx == 1 ? -1 : 1; 
     }
     else if(ch == 'y')
     {
-		upy = 1; upx = 0; upz = 0;
+		upy = upy == 1 ? -1 : 1; 
     }
     else if(ch == 'z')
     {
-		upz = 1; upx = 0; upy = 0;
+		upz = upz == 1 ? -1 : 1; 
     }
     else if(ch == 27)
     {
