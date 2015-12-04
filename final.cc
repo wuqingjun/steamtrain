@@ -96,7 +96,7 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	sun(300, 100, 200, 50, Color(1, 1, 1, 1), GL_LIGHT0);
+	sun(300, 100, 100, 50, Color(1, 1, 1, 1), GL_LIGHT0);
 	train(0, 0, 0, 100, 100, 100);
 	glPushMatrix();
 	glScaled(100, 100, 100);

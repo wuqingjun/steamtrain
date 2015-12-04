@@ -28,8 +28,8 @@ void sun(double x, double y, double z, double r, Color color, int lightnum)
     glLightfv(lightnum, GL_SPECULAR, Specular);
 	float bubbleposition[3] = {float(x), float(y), float(z)};
     glLightfv(lightnum, GL_POSITION, bubbleposition);
-    glLightf(lightnum, GL_SPOT_CUTOFF, 25);
-	float direction[3] = {-1, -1, -1};
+    glLightf(lightnum, GL_SPOT_CUTOFF, 30);
+	float direction[3] = {-1, 0, 0};
 	glLightfv(lightnum, GL_SPOT_DIRECTION, direction);
     glLightf(lightnum, GL_SPOT_EXPONENT, 1);
 	glLightf(lightnum, GL_CONSTANT_ATTENUATION, 1.5);
