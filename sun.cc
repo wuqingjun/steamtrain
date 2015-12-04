@@ -12,6 +12,7 @@
 extern int ambient;
 extern int diffuse;
 extern int specular;
+extern int angel;
 extern float white[4];
 
 //
@@ -28,8 +29,8 @@ void sun(double x, double y, double z, double r, Color color, int lightnum)
     glLightfv(lightnum, GL_SPECULAR, Specular);
 	float bubbleposition[3] = {float(x), float(y), float(z)};
     glLightfv(lightnum, GL_POSITION, bubbleposition);
-    glLightf(lightnum, GL_SPOT_CUTOFF, 30);
-	float direction[3] = {-1, 0, 0};
+    glLightf(lightnum, GL_SPOT_CUTOFF, angel);
+	float direction[3] = {0, -1, 0};
 	glLightfv(lightnum, GL_SPOT_DIRECTION, direction);
     glLightf(lightnum, GL_SPOT_EXPONENT, 1);
 	glLightf(lightnum, GL_CONSTANT_ATTENUATION, 1.5);

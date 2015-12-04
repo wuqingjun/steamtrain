@@ -36,6 +36,10 @@ double asp = 1.0;
 
 double atx = 0, aty = 0, atz = 0;
 double fov = 120.0;
+int sunx = 400;
+int suny = 400;
+int sunz = 400;
+int angel = 30;
 int ph = -30;
 int th = -30;
 int dim = 1000;
@@ -96,7 +100,7 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	sun(300, 100, 100, 50, Color(1, 1, 1, 1), GL_LIGHT0);
+	sun(sunx, suny, sunz, 50, Color(1, 1, 1, 1), GL_LIGHT0);
 	train(0, 0, 0, 100, 100, 100);
 	glPushMatrix();
 	glScaled(100, 100, 100);
@@ -141,7 +145,8 @@ void display(void)
    }
 
 	glWindowPos2d(5, 5);	
-	Print("mode=%d, dim=%d, th=%d, ph=%d", mode, dim, th, ph);
+	Print("mode=%d, dim=%d, th=%d, ph=%d, sunx=%d, suny=%d, sunz=%, angel=%d", 
+		mode, dim, th, ph, sunx, suny, sunz, angel);
 
     ErrCheck("in display...");
     glFlush();
@@ -195,6 +200,38 @@ void keyboard(unsigned char ch, int x, int y)
     {
     	animation = (animation + 1) % 2;	
     }	
+	else if(ch == 'q')
+	{
+		sunx -= 5;
+	}
+	else if(ch == 'Q')
+	{
+		sunx += 5;
+	}
+	else if(ch == 'w')
+	{
+		suny -= 5;
+	}
+	else if(ch == 'W')
+	{
+		suny += 5;
+	}
+	else if(ch == 'e')
+	{
+		sunz -= 5;
+	}
+	else if(ch == 'E')
+	{
+		sunz += 5;
+	}
+	else if(ch == 'r')
+	{
+		angel -= 5;
+	}
+	else if(ch == 'R')
+	{
+		angel += 5;
+	}
     else if(ch == 'H')
     {
 		h2 += 5;
