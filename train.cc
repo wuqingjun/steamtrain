@@ -17,8 +17,6 @@
 double angle = 0;
 extern float black[4];
 extern int ntexMetal;
-extern double ex;
-extern double atx;
 
 //
 // draw the cylinder. 
@@ -29,8 +27,6 @@ void train(double x, double y, double z, double scaleX, double scaleY, double sc
     float fRevolveScale2 = 0.1f;
     angle = iTimeElapsed * fRevolveScale2;
 	double moveDistX = -0.8 * angle / 360;
-//	ex += moveDistX; 
-//	atx += moveDistX; 
 
     glPushMatrix();
 	glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, black);

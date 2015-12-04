@@ -23,7 +23,6 @@ void sphere(double x,
 {
     double d = 1.0;
     glPushMatrix();
-    
     glTranslated(x, y, z);
     glScaled(r, r, r);
     glColor3f(color.r, color.g, color.b);

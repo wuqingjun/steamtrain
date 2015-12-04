@@ -34,13 +34,11 @@ double axeslen = 95;
 double asp = 1.0;
 #define PI 3.14159265
 
-int upx = 0;
-int upy = 0;
-int upz = -1;
+double atx = 0, aty = 0, atz = 0;
 double fov = 120.0;
-double ph = 0; //2;
-double th = 0; //102;
-double dim = 700;
+int ph = -30;
+int th = -30;
+int dim = 1000;
 double windowsize = 650;
 int mode = 0;
 int smooth = 0;
@@ -60,14 +58,8 @@ int ntexBricks = -1;
 int ntexRock = -1;
 int ntexMountain = -1;
 int ntexDesert = 1;
+bool axes = true;
 float h2 = 0;
-
-double	ex = 200;
-double	ez = 0;
-double  ey = 200;
-double atx = 0;
-double aty = 0;
-double atz = 0;
 const int H = 6;
 const int M = pow(2, H) + 1;
 vector<vector<float> > heightmap(pow(2, 6) + 1, vector<float>(M, 0.0));
@@ -93,10 +85,10 @@ void display(void)
 
     if(mode)
     {
-		//ex = 120 + ; //1 * dim * Sin(ph);
-		//ez = 0; //1.0 * dim * Cos(ph);
-		//ey = 50; //1.5* dim * Sin(th); 
-    	gluLookAt(ex, ey, ez, atx, aty, atz, upx, upy, upz);
+		double ex = atx - 2 * dim * Sin(th) * Cos(ph);
+		double ey = aty + 2 * dim        * Sin(ph);
+		double ez = atz + 2 * dim * Cos(th) * Cos(ph);
+    	gluLookAt(ex, ey, ez, atx, aty, atz, 0, 1, 0);
     }
     else
     {
@@ -104,7 +96,7 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 
-	sun(300, 400, 300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
+	sun(300, 400, -300, 50, Color(1, 1, 1, 1), GL_LIGHT0);
 	train(0, 0, 0, 100, 100, 100);
 	glPushMatrix();
 	glScaled(100, 100, 100);
@@ -120,16 +112,37 @@ void display(void)
 	glPopMatrix();
 	mountain(mountainheightmap5, 1, -0.15, -2.5, 12, 12, 5);	
 	mountain(mountainheightmap3, 1, -0.15, -28.5, 18, 18, 9);	
-	ground(0, -0.1, 0, 400, 400, Color(0.9, 0.3, 0.3, 1));
+	ground(0, -0.1, 0, 28, 28, Color(0.9, 0.3, 0.3, 1));
 	glPopMatrix();
 	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glTranslated(9, 0, 0);
 	glRotated(30, 0, 1, 0);
 	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glPopMatrix();
+
+   glColor3f(1,1,1);
+   if (axes)
+   {
+      glBegin(GL_LINES);
+      glVertex3d(0.0,0.0,0.0);
+      glVertex3d(300,0.0,0.0);
+      glVertex3d(0.0,0.0,0.0);
+      glVertex3d(0.0,300,0.0);
+      glVertex3d(0.0,0.0,0.0);
+      glVertex3d(0.0,0.0,300);
+      glEnd();
+
+      glRasterPos3d(300,0.0,0.0);
+      Print("X");
+      glRasterPos3d(0.0,300,0.0);
+      Print("Y");
+      glRasterPos3d(0.0,0.0,300);
+      Print("Z");
+   }
+
 	glWindowPos2d(5, 5);	
-	Print("rep: %f", rep);
-	
+	Print("mode=%d, dim=%d, th=%d, ph=%d", mode, dim, th, ph);
+
     ErrCheck("in display...");
     glFlush();
     glutSwapBuffers();
@@ -156,48 +169,24 @@ void changeSize(GLsizei w, GLsizei h)
     project();
 }
 
-
-void specialKeys( int key, int x, int y ) {
-	if(mode == 0)
-	{
-    if (key == GLUT_KEY_RIGHT)
-        th += 3;
-    else if (key == GLUT_KEY_LEFT)
-        th -= 3;
-    else if (key == GLUT_KEY_UP)
-       	ph += 3;
-    else if (key == GLUT_KEY_DOWN)
-        ph -= 3;
-	}
-	else
-	{
-		if (key == GLUT_KEY_RIGHT)
-			ex += 10;
-        else if (key == GLUT_KEY_LEFT)
-            ex -= 10;
-        else if (key == GLUT_KEY_UP)
-            ez -= 10;
-        else if (key == GLUT_KEY_DOWN)
-            ez += 10;
-        else if(key == GLUT_KEY_PAGE_UP)
-            ey += 10;
-        else if(key == GLUT_KEY_PAGE_DOWN)
-            ey -= 10;
-        if(mode == 2)
-        {// third person view
-            if (key == GLUT_KEY_RIGHT)
-                atx += 10;
-            else if (key == GLUT_KEY_LEFT)
-                atx -= 10;
-            else if (key == GLUT_KEY_UP)
-                atz -= 10;
-            else if (key == GLUT_KEY_DOWN)
-                atz += 10;
-        }		
-	}
- 
-    project();
-    glutPostRedisplay();
+void specialKeys(int key,int x,int y)
+{
+   if (key == GLUT_KEY_RIGHT)
+      th += 5;
+   else if (key == GLUT_KEY_LEFT)
+      th -= 5;
+   else if (key == GLUT_KEY_UP)
+      ph += 5;
+   else if (key == GLUT_KEY_DOWN)
+      ph -= 5;
+   else if (key == GLUT_KEY_PAGE_DOWN)
+      dim += 10;
+   else if (key == GLUT_KEY_PAGE_UP)
+      dim -= 10;
+   th %= 360;
+   ph %= 360;
+   project();	
+   glutPostRedisplay();
 }
 
 void keyboard(unsigned char ch, int x, int y)
@@ -224,7 +213,7 @@ void keyboard(unsigned char ch, int x, int y)
     }
     else if(ch == 'm')
     {
-		mode = (mode + 1) % 2;
+		mode = (mode + 1) % 3;
     }
     else if(ch == 's')
     {
@@ -247,18 +236,6 @@ void keyboard(unsigned char ch, int x, int y)
     {
 		rep += 0.1;
     }
-    else if(ch == 'x')
-    {
-		upx = upx == 1 ? -1 : 1; 
-    }
-    else if(ch == 'y')
-    {
-		upy = upy == 1 ? -1 : 1; 
-    }
-    else if(ch == 'z')
-    {
-		upz = upz == 1 ? -1 : 1; 
-    }
     else if(ch == 27)
     {
         exit(0);
@@ -266,7 +243,7 @@ void keyboard(unsigned char ch, int x, int y)
 
     if(shininess > 0)
     {
-	shininess %= 8;
+		shininess %= 8;
     }
     
     shinyvec[0] = shininess<0 ? 0 : pow(2.0,shininess); 
