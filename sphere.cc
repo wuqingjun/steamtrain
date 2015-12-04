@@ -35,7 +35,7 @@ void sphere(double x,
     
     if(isEmission)
     {
-		glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, white);
+//		glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, white);
     }
     else
     {
