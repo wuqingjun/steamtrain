@@ -23,7 +23,8 @@ void sphere(double x,
 	Color color, 
 	bool isEmission, 
 	int lightnum, 
-	int ntex);
+	int ntex,
+	int normalDir);
 
 #ifdef __cplusplus
 }

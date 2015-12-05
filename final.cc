@@ -29,6 +29,7 @@
 #include "sun.h"
 #include "ground.h"
 #include "beam.h"
+#include "sphere.h"
 
 using namespace std;
 double axeslen = 95;
@@ -56,7 +57,8 @@ int ntexMetal = -1;
 int ntexBricks = -1;
 int ntexRock = -1;
 int ntexMountain = -1;
-int ntexDesert = 1;
+int ntexDesert = -1;
+int ntexSky = -1;
 bool axes = true;
 float h2 = 0;
 const int H = 6;
@@ -106,6 +108,9 @@ void display(void)
 	{
 		glDisable(GL_LIGHT0);
 	}
+	
+	sphere(0, 0, 0, 1400, 0, 90, Color(1, 1, 1, 1), false, -1, ntexSky, -1); 
+
 	train(700, 0, 0, 100, 100, 100, GL_LIGHT1);
 	glPushMatrix();
 	glScaled(100, 100, 100);
@@ -262,6 +267,7 @@ void loadTexture()
 	ntexRock = LoadTexBMP("./images/rock1.bmp");
 	ntexMountain = LoadTexBMP("./images/mountain.bmp");
 	ntexDesert = LoadTexBMP("./images/desert2.bmp");
+	ntexSky = LoadTexBMP("./images/sky.bmp");
 }
 
 int main(int argc, char** argv)

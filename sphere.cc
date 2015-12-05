@@ -19,7 +19,8 @@ void sphere(double x,
 	Color color, 
 	bool isEmission, 
 	int lightnum, 
-	int ntex)
+	int ntex, 
+	int normalDir = 1)
 {
     double d = 1.0;
     glPushMatrix();
@@ -33,11 +34,7 @@ void sphere(double x,
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shinyvec);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white);
     
-    if(isEmission)
-    {
-//		glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION, white);
-    }
-    else
+    if(!isEmission)
     {
     	glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);
     }
@@ -59,17 +56,17 @@ void sphere(double x,
     	glBegin(GL_TRIANGLE_STRIP);
     	for(int i = 0; i <=360; i += d)
     	{
-            	glNormal3f(Sin(j) * Sin(i), Cos(j), Sin(j) * Cos(i));
+			glNormal3f(Sin(j) * Sin(i) * normalDir, Cos(j) * normalDir, Sin(j) * Cos(i) * normalDir);
             if(ntex >= 0)
             {
                 glTexCoord2f(rep * (float) i / 360, rep * (j - startangle) /(float) (endangle - startangle));
             }
-	    glVertex3f(Sin(j) * Sin(i), Cos(j), Sin(j) * Cos(i));
+			glVertex3f(Sin(j) * Sin(i), Cos(j), Sin(j) * Cos(i));
             if(ntex >= 0)
             {
                 glTexCoord2f(rep * (float) i / 360, rep * (j + d - startangle) /(float) (endangle - startangle));
             }
-	    glVertex3f(Sin(j + d) * Sin(i), Cos(j +  d), Sin(j + d) * Cos(i));
+			glVertex3f(Sin(j + d) * Sin(i), Cos(j +  d), Sin(j + d) * Cos(i));
     	}
     	glEnd();
     }

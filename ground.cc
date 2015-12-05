@@ -22,7 +22,6 @@ extern float black[4];
 //
 void ground(double x, double y, double z, double l, double w, Color color)
 {
-	int repl = 50;
     glPushMatrix();
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS, shinyvec);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR, white);

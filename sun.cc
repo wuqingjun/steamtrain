@@ -37,6 +37,6 @@ void sun(double x, double y, double z, double r, Color color, int lightnum)
 	glEnable(lightnum);
 
 	glPushMatrix();
-	sphere(x, y, z, r, 0, 180, color, true, lightnum, -1);
+	sphere(x, y, z, r, 0, 180, color, true, lightnum, -1, 1);
 	glPopMatrix();
 }
