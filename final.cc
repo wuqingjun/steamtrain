@@ -1,8 +1,8 @@
 //
-//  hw6.cc
-//  texture and lighting 
+//	final project 
+//	steam train 
 //
-//  Created by Qingjun Wu on 10/23/2015.
+//  Created by Qingjun Wu on 12/05/2015.
 //  Copyright © 2015 wade wu. All rights reserved.
 //
 
@@ -28,6 +28,7 @@
 #include "tunnel.h"
 #include "sun.h"
 #include "ground.h"
+#include "beam.h"
 
 using namespace std;
 double axeslen = 95;
@@ -36,18 +37,12 @@ double asp = 1.0;
 
 double atx = 0, aty = 0, atz = 0;
 double fov = 120.0;
-int sunx = 400;
-int suny = 400;
-int sunz = 400;
-int angel = 30;
 int ph = -30;
 int th = -30;
-int dim = 1000;
+int dim = 480;
 double windowsize = 650;
 int mode = 0;
-int smooth = 0;
-int ambient = 30;
-int diffuse   = 100;  
+int daytime = 1;
 int specular  =   0;  
 int shininess =   0;  
 float shinyvec[1] = { 0.0};
@@ -75,13 +70,16 @@ vector<vector<float> > mountainheightmap5(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap6(M, vector<float>(M, 0.0));
 float white[] = {1, 1, 1, 1};
 float black[] = {0, 0, 0, 1};
+float beam1pos[3] = {300, 100, 0};
+float beam1dir[3] = {-1, 0, 0};
+float beam1angle = 30;
 
 void display(void)
 {
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT | GLUT_RGB);
     glEnable(GL_DEPTH_TEST);
     glLoadIdentity();
-	glShadeModel(smooth ? GL_SMOOTH : GL_FLAT); 
+	glShadeModel(GL_SMOOTH); 
 	glEnable(GL_NORMALIZE);
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
@@ -99,9 +97,16 @@ void display(void)
     	glRotatef(ph,1,0,0);
     	glRotatef(th,0,1,0);
     }    
-
-	sun(sunx, suny, sunz, 50, Color(1, 1, 1, 1), GL_LIGHT0);
-	train(0, 0, 0, 100, 100, 100);
+	
+	if(daytime)
+	{	
+		sun(0, 700, 200, 50, Color(1.0, 1.0, 1.0, 1), GL_LIGHT0);
+	}
+	else
+	{
+		glDisable(GL_LIGHT0);
+	}
+	train(700, 0, 0, 100, 100, 100, GL_LIGHT1);
 	glPushMatrix();
 	glScaled(100, 100, 100);
 	glTranslated(0, -0.82, -0.5);
@@ -116,12 +121,16 @@ void display(void)
 	glPopMatrix();
 	mountain(mountainheightmap5, 1, -0.15, -2.5, 12, 12, 5);	
 	mountain(mountainheightmap3, 1, -0.15, -28.5, 18, 18, 9);	
-	ground(0, -0.1, 0, 28, 28, Color(0.9, 0.3, 0.3, 1));
+	ground(0, -0.1, 0, 280, 280, Color(0.9, 0.3, 0.3, 1));
 	glPopMatrix();
-	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
+	raleway(50, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glTranslated(9, 0, 0);
 	glRotated(30, 0, 1, 0);
-	raleway(60, .3, .7, 0.3, Color(0, 0, 0, 1));
+	raleway(50, .3, .7, 0.3, Color(0, 0, 0, 1));
+	glPopMatrix();
+	glPushMatrix();
+	glRotated(30, 0, 1, 0);
+	train(900, 0, 455, 100, 100, 100, GL_LIGHT2);
 	glPopMatrix();
 
    glColor3f(1,1,1);
@@ -145,8 +154,8 @@ void display(void)
    }
 
 	glWindowPos2d(5, 5);	
-	Print("mode=%d, dim=%d, th=%d, ph=%d, sunx=%d, suny=%d, sunz=%, angel=%d", 
-		mode, dim, th, ph, sunx, suny, sunz, angel);
+	Print("mode=%d, dim=%d, th=%d, ph=%d",
+		mode, dim, th, ph);
 
     ErrCheck("in display...");
     glFlush();
@@ -196,73 +205,13 @@ void specialKeys(int key,int x,int y)
 
 void keyboard(unsigned char ch, int x, int y)
 {
-    if(ch == 'a')
-    {
-    	animation = (animation + 1) % 2;	
-    }	
-	else if(ch == 'q')
+	if(ch == 'd')
 	{
-		sunx -= 5;
+		daytime = (daytime + 1) % 2;
 	}
-	else if(ch == 'Q')
-	{
-		sunx += 5;
-	}
-	else if(ch == 'w')
-	{
-		suny -= 5;
-	}
-	else if(ch == 'W')
-	{
-		suny += 5;
-	}
-	else if(ch == 'e')
-	{
-		sunz -= 5;
-	}
-	else if(ch == 'E')
-	{
-		sunz += 5;
-	}
-	else if(ch == 'r')
-	{
-		angel -= 5;
-	}
-	else if(ch == 'R')
-	{
-		angel += 5;
-	}
-    else if(ch == 'H')
-    {
-		h2 += 5;
-    }
-    else if(ch == 'h')
-    {
-		h2 -= 5;
-    }
-    else if(ch == 'V')
-    {
-		fov += 1.0;
-    }
-    else if(ch == 'v')
-    {
-		fov -= 1.0;
-    }
     else if(ch == 'm')
     {
 		mode = (mode + 1) % 3;
-    }
-    else if(ch == 's')
-    {
-		smooth = (smooth + 1) % 2;
-    }
-    else if(ch == 'N')
-    {
-		shininess += 1;
-    } 
-    else if(ch == 'n')
-    {
-		shininess -= 1;	
     }
     else if(ch == 'r')
     {

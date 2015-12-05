@@ -13,15 +13,17 @@
 #include "cover.h"
 #include "wheel.h"
 #include "pile.h"
+#include "beam.h"
 
 double angle = 0;
 extern float black[4];
 extern int ntexMetal;
+extern int daytime;
 
 //
 // draw the cylinder. 
 //
-void train(double x, double y, double z, double scaleX, double scaleY, double scaleZ)
+void train(double x, double y, double z, double scaleX, double scaleY, double scaleZ, int lightnum)
 {
     int iTimeElapsed = glutGet(GLUT_ELAPSED_TIME);
     float fRevolveScale2 = 0.1f;
@@ -35,6 +37,14 @@ void train(double x, double y, double z, double scaleX, double scaleY, double sc
     glTranslated(x, y, z);
 	glScaled(scaleX, scaleY, scaleZ);
 	glTranslated(moveDistX, 0, 0);	
+	if(!daytime)
+	{	
+		beam(1, 0, 0, 45, -1, 0, 0, lightnum);
+	}
+	else
+	{
+		glDisable(lightnum);
+	}	
 
 	glPushMatrix();
 	glRotatef(-90, 0, 0, 1);

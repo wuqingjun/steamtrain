@@ -24,7 +24,7 @@ void raleway(double l, double w, double h, double space,  Color color)
 	cube(l, 0.15, 0.1, color, 0X3F, 1, ntexMetal);
 	glTranslated(0, 0, 1.4);
 	cube(l, 0.15, 0.1, color, 0X3F, 1, ntexMetal);
-	glTranslated(-l/2, -0.2, -0.7);
+	glTranslated(-l, -0.2, -0.7);
 	for(double bl = 0.0; bl <= l; bl += 0.4)
 	{
 		cube(0.4, 0.2, 1.2, Color(0.7, 0.7, 0.7, 1), 0X3F, 1, ntexWood);		

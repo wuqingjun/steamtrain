@@ -47,9 +47,10 @@ sun.o: sun.cc sun.h
 smoothheightmap.o: smoothheightmap.cc smoothheightmap.h
 tunnel.o: tunnel.cc tunnel.h
 ground.o: ground.cc ground.h
+beam.o: beam.cc beam.h
 
 #  Create archive
-CSCIx229.a:fatal.o loadtexbmp.o print.o project.o errcheck.o object.o square.o sphere.o cylinder.o cube.o pie.o cover.o wheel.o pile.o raleway.o train.o mountain.o diamondsquare.o sun.o smoothheightmap.o tunnel.o ground.o 
+CSCIx229.a:fatal.o loadtexbmp.o print.o project.o errcheck.o object.o square.o sphere.o cylinder.o cube.o pie.o cover.o wheel.o pile.o raleway.o train.o mountain.o diamondsquare.o sun.o smoothheightmap.o tunnel.o ground.o beam.o 
 	ar -rcs $@ $^
 
 $(EXE).o: $(EXE).cc
