@@ -30,6 +30,7 @@
 #include "ground.h"
 #include "beam.h"
 #include "sphere.h"
+#include "rain.h"
 
 using namespace std;
 double axeslen = 95;
@@ -70,6 +71,8 @@ vector<vector<float> > mountainheightmap3(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap4(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap5(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap6(M, vector<float>(M, 0.0));
+const int MAXRAINDROPS = 100;
+RainDropDesc rainDrops[MAXRAINDROPS];
 float white[] = {1, 1, 1, 1};
 float black[] = {0, 0, 0, 1};
 float beam1pos[3] = {300, 100, 0};
@@ -100,6 +103,8 @@ void display(void)
     	glRotatef(th,0,1,0);
     }    
 	
+//	rainDrop(0, 0, 0, 500, 500, 500);
+	drawrain(rainDrops, MAXRAINDROPS, 1);
 	if(daytime)
 	{	
 		sun(0, 700, 200, 50, Color(1.0, 1.0, 1.0, 1), GL_LIGHT0);
@@ -109,7 +114,7 @@ void display(void)
 		glDisable(GL_LIGHT0);
 	}
 	
-	sphere(0, 0, 0, 1400, 0, 90, Color(1, 1, 1, 1), false, -1, ntexSky, -1); 
+	//sphere(0, 0, 0, 1400, 0, 90, Color(1, 1, 1, 1), false, -1, ntexSky, -1); 
 
 	train(700, 0, 0, 100, 100, 100, GL_LIGHT1);
 	glPushMatrix();
@@ -134,10 +139,9 @@ void display(void)
 	raleway(50, .3, .7, 0.3, Color(0, 0, 0, 1));
 	glPopMatrix();
 	glPushMatrix();
-	glRotated(30, 0, 1, 0);
-	train(900, 0, 455, 100, 100, 100, GL_LIGHT2);
+	glRotated(210, 0, 1, 0);
+	train(900, 0, -455, 100, 100, 100, GL_LIGHT2);
 	glPopMatrix();
-
    glColor3f(1,1,1);
    if (axes)
    {
@@ -286,6 +290,8 @@ int main(int argc, char** argv)
 	smoothheightmap(mountainheightmap5, 0.9, 23);
 	diamondsquare(mountainheightmap6, 0.95, M, 9, 0, 0, M - 1, M - 1); 	
 	smoothheightmap(mountainheightmap6, 0.9, 23);
+	initrain(700, 700, 700, 30, 60, 15, 15, rainDrops, MAXRAINDROPS); 
+
     glutInitWindowSize(windowsize, windowsize);
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
