@@ -9,9 +9,7 @@
 #endif
 
 
-extern float rep;
 extern float shinyvec[1];
-extern unsigned int texture[20];
 extern float white[4];
 extern float black[4];
 

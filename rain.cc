@@ -3,6 +3,7 @@
 #include "rain.h"
 #include "cover.h"
 #include "sphere.h"
+#include "cube.h"
 #define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -27,8 +28,25 @@ void rainDrop(RainDropDesc &drop)
 	glRotatef(drop.rotatex, 1, 0, 0);
 	glRotatef(drop.rotatez, 0, 0, 1);
 	glScaled(drop.scale, drop.scale, drop.scale);
-	cover(0, 30, 0.3, Color(0.8, 0.9, 0.95, 1));
-	sphere(0, -0.3, 0, 0.173, 90, 180, Color(0.8, 0.9, 0.95, 1), false, -1, -1, 1); 
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+	glDepthMask(0);
+	if(drop.shape)
+	{
+//		cover(0, 30, 0.3, Color(0.8, 0.9, 0.95, 0.8));
+//		sphere(0, -0.3, 0, 0.173, 90, 180, Color(0.8, 0.9, 0.95, 0.8), false, -1, -1, 1); 
+	}
+	else
+	{
+		glColor4f(0.8, 0.9, 0.95, 0.8);
+		glBegin(GL_LINES);
+		glVertex3f(0, 1, 0);
+		glVertex3f(0, 0, 0);	
+		glEnd();
+	}
+	glDisable(GL_BLEND);
+	glDepthMask(1);
 	glPopMatrix();
 }
 
@@ -36,8 +54,12 @@ void initrain(int maxx, int maxy, int maxz, int scaleMin, int scaleMax, int rota
 {
 	for(int i = 0; i < amount; ++i)
 	{
+		if(rand() % 10 == 1)
+		{
+			drops[i].shape = 1;
+		}
 		int x = rand() % maxx * (rand() % 2 ? -1 : 1);
-		int y = (rand() % maxy + 800) * (rand() % 2 ? -1 : 1);
+		int y = (rand() % maxy + 800); 
 		int z = rand() % maxz * (rand() % 2 ? -1 : 1);
 		int scale = rand() % scaleMax + scaleMin;
 		drops[i].newx = drops[i].x = x;
@@ -63,7 +85,7 @@ void drawrain(RainDropDesc * drops, int amount, float speed)
 			drops[i].newy = drops[i].y;	
 			drops[i].newz = drops[i].z;	
 		}
-		if(drops[i].newy < 800)
+	//	if(drops[i].newy < 800)
 		{
 			rainDrop(drops[i]);
 		}

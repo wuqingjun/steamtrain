@@ -26,7 +26,7 @@ void sphere(double x,
     glPushMatrix();
     glTranslated(x, y, z);
     glScaled(r, r, r);
-    glColor3f(color.r, color.g, color.b);
+    glColor4f(color.r, color.g, color.b, color.dim);
 
     float white[] = {1,1,1,1};
     float black[] = {0,0,0,1};
@@ -70,7 +70,6 @@ void sphere(double x,
     	}
     	glEnd();
     }
-
     if(ntex >= 0)
     {
     	glDisable(GL_TEXTURE_2D);

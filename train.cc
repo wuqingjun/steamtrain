@@ -19,6 +19,7 @@ double angle = 0;
 extern float black[4];
 extern int ntexMetal;
 extern int daytime;
+extern float white[4];
 
 //
 // draw the cylinder. 

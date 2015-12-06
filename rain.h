@@ -6,6 +6,7 @@
 
 struct RainDropDesc
 {
+	int shape;
 	float x;
 	float y;
 	float z;
