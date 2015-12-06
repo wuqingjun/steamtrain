@@ -71,7 +71,7 @@ vector<vector<float> > mountainheightmap3(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap4(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap5(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap6(M, vector<float>(M, 0.0));
-const int MAXRAINDROPS = 1600;
+const int MAXRAINDROPS = 16000;
 RainDropDesc rainDrops[MAXRAINDROPS];
 float white[] = {1, 1, 1, 1};
 float black[] = {0, 0, 0, 1};

@@ -41,7 +41,7 @@ void rainDrop(RainDropDesc &drop)
 	{
 		glColor4f(0.8, 0.9, 0.95, 0.8);
 		glBegin(GL_LINES);
-		glVertex3f(0, 1, 0);
+		glVertex3f(0, 0.05, 0);
 		glVertex3f(0, 0, 0);	
 		glEnd();
 	}
@@ -85,9 +85,6 @@ void drawrain(RainDropDesc * drops, int amount, float speed)
 			drops[i].newy = drops[i].y;	
 			drops[i].newz = drops[i].z;	
 		}
-	//	if(drops[i].newy < 800)
-		{
-			rainDrop(drops[i]);
-		}
+		rainDrop(drops[i]);
 	}
 }
