@@ -21,13 +21,12 @@ extern float black[4];
 extern int ntexMetal;
 extern int daytime;
 extern float white[4];
-extern const int MAXSMOKEPARTICLES = 1000;
-extern Particle smokeparticles[1];
+extern Particle smokeparticles[2][1600];
 
 //
 // draw the cylinder. 
 //
-void train(double x, double y, double z, double scaleX, double scaleY, double scaleZ, int lightnum)
+void train(double x, double y, double z, double scaleX, double scaleY, double scaleZ, int lightnum, int smokeindex)
 {
     int iTimeElapsed = glutGet(GLUT_ELAPSED_TIME);
     float fRevolveScale2 = 0.1f;
@@ -110,6 +109,6 @@ void train(double x, double y, double z, double scaleX, double scaleY, double sc
 
     glPopMatrix();
     glPopMatrix();
-	glTranslated(x + scaleX * moveDistX, 0, 0);
-	drawsmoke(smokeparticles, 1000, 1);
+//	glTranslated(x + scaleX * moveDistX, 10, 0);
+//	drawsmoke(smokeparticles[smokeindex], 1600, 1);
 }

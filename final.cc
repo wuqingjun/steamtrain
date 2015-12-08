@@ -75,8 +75,8 @@ vector<vector<float> > mountainheightmap5(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap6(M, vector<float>(M, 0.0));
 const int MAXRAINDROPS = 1600;
 RainDropDesc rainDrops[MAXRAINDROPS];
-const int MAXSMOKEPARTICLES = 1000;
-Particle smokeparticles[MAXSMOKEPARTICLES];
+const int MAXSMOKEPARTICLES = 1500;
+Particle smokeparticles[2][MAXSMOKEPARTICLES];
 float white[] = {1, 1, 1, 1};
 float black[] = {0, 0, 0, 1};
 float beam1pos[3] = {300, 100, 0};
@@ -116,9 +116,8 @@ void display(void)
 		glDisable(GL_LIGHT0);
 	}
 	
-	//sphere(0, 0, 0, 1400, 0, 90, Color(1, 1, 1, 1), false, -1, ntexSky, -1); 
 	glDepthMask(1);
-	train(700, 0, 0, 100, 100, 100, GL_LIGHT1);
+	train(700, 0, 0, 100, 100, 100, GL_LIGHT1, 0);
 	glPushMatrix();
 	glScaled(100, 100, 100);
 	glTranslated(0, -0.82, -0.5);
@@ -142,10 +141,20 @@ void display(void)
 	glPopMatrix();
 	glPushMatrix();
 	glRotated(210, 0, 1, 0);
-	train(900, 0, -455, 100, 100, 100, GL_LIGHT2);
+	train(900, 0, -455, 100, 100, 100, GL_LIGHT2, 1);
 	glPopMatrix();
+
+	glPushMatrix();
 	drawrain(rainDrops, MAXRAINDROPS, 1);
-	drawsmoke(smokeparticles, MAXSMOKEPARTICLES, 1);
+	glTranslated(720 - 100* glutGet(GLUT_ELAPSED_TIME) * 0.1f * 0.8 / 360, 100, 0);
+	drawsmoke(smokeparticles[0], MAXSMOKEPARTICLES, 1);
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotated(210, 0, 1, 0);
+	glTranslated(900 - 100* glutGet(GLUT_ELAPSED_TIME) * 0.1f * 0.8 / 360, 100, -450);
+	drawsmoke(smokeparticles[1], MAXSMOKEPARTICLES, 1);
+	glPopMatrix();
 
    glColor3f(1,1,1);
    if (axes)
@@ -250,9 +259,16 @@ void keyboard(unsigned char ch, int x, int y)
     project();
     glutPostRedisplay();
 }
-
+int timing = 0;
 void idle()
 {
+	timing += 1;
+	if(timing % 40 == 0)
+	{
+		initsmokeparticles(0, 0, 0, 0, 0, 0, 20, 30, 5, 10, 10, 20, Color(0.8, 0.95, 0.85, 0.3), smokeparticles[0], MAXSMOKEPARTICLES); 
+		initsmokeparticles(0, 0, 0, 0, 0, 0, 20, 30, 5, 10, 10, 20, Color(0.8, 0.95, 0.85, 0.3), smokeparticles[1], MAXSMOKEPARTICLES); 
+		timing = 0;
+	}
   if(animation)
   {
    	double t = glutGet(GLUT_ELAPSED_TIME)/1600.0;
@@ -263,7 +279,6 @@ void idle()
 void setupRC()
 {
 	glClearColor(0, 0, 0, 1.0);
-	//glClearColor(1, 1, 1, 1.0);
 }
 
 
@@ -296,8 +311,6 @@ int main(int argc, char** argv)
 	diamondsquare(mountainheightmap6, 0.95, M, 9, 0, 0, M - 1, M - 1); 	
 	smoothheightmap(mountainheightmap6, 0.9, 23);
 	initrain(1400, 700, 1400, 10, 20, 15, 15, rainDrops, MAXRAINDROPS); 
-	initsmokeparticles(0, 0, 0, 0, 0, 0, 20, 30, 5, 10, 10, 20, Color(0.8, 0.95, 0.85, 0.8), smokeparticles, MAXSMOKEPARTICLES); 
-
     glutInitWindowSize(windowsize, windowsize);
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

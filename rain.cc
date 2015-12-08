@@ -47,7 +47,7 @@ void rainDrop(RainDropDesc &drop)
 		glBegin(GL_LINES);
 
 
-		glVertex3f(0, 0.4, 0);
+		glVertex3f(0, 0.6, 0);
 		glVertex3f(0, 0, 0);	
 		glEnd();
 	}
