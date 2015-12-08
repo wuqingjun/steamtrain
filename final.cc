@@ -31,6 +31,8 @@
 #include "beam.h"
 #include "sphere.h"
 #include "rain.h"
+#include "particle.h"
+#include "smoke.h"
 
 using namespace std;
 double axeslen = 95;
@@ -73,6 +75,8 @@ vector<vector<float> > mountainheightmap5(M, vector<float>(M, 0.0));
 vector<vector<float> > mountainheightmap6(M, vector<float>(M, 0.0));
 const int MAXRAINDROPS = 1600;
 RainDropDesc rainDrops[MAXRAINDROPS];
+const int MAXSMOKEPARTICLES = 1000;
+Particle smokeparticles[MAXSMOKEPARTICLES];
 float white[] = {1, 1, 1, 1};
 float black[] = {0, 0, 0, 1};
 float beam1pos[3] = {300, 100, 0};
@@ -141,6 +145,7 @@ void display(void)
 	train(900, 0, -455, 100, 100, 100, GL_LIGHT2);
 	glPopMatrix();
 	drawrain(rainDrops, MAXRAINDROPS, 1);
+	drawsmoke(smokeparticles, MAXSMOKEPARTICLES, 1);
 
    glColor3f(1,1,1);
    if (axes)
@@ -290,7 +295,8 @@ int main(int argc, char** argv)
 	smoothheightmap(mountainheightmap5, 0.9, 23);
 	diamondsquare(mountainheightmap6, 0.95, M, 9, 0, 0, M - 1, M - 1); 	
 	smoothheightmap(mountainheightmap6, 0.9, 23);
-	initrain(1400, 700, 1400, 30, 60, 15, 15, rainDrops, MAXRAINDROPS); 
+	initrain(1400, 700, 1400, 10, 20, 15, 15, rainDrops, MAXRAINDROPS); 
+	initsmokeparticles(0, 0, 0, 0, 0, 0, 20, 30, 5, 10, 10, 20, Color(0.8, 0.95, 0.85, 0.8), smokeparticles, MAXSMOKEPARTICLES); 
 
     glutInitWindowSize(windowsize, windowsize);
     glutInit(&argc, argv);

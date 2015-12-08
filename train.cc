@@ -14,12 +14,15 @@
 #include "wheel.h"
 #include "pile.h"
 #include "beam.h"
+#include "smoke.h"
 
 double angle = 0;
 extern float black[4];
 extern int ntexMetal;
 extern int daytime;
 extern float white[4];
+extern const int MAXSMOKEPARTICLES = 1000;
+extern Particle smokeparticles[1];
 
 //
 // draw the cylinder. 
@@ -107,4 +110,6 @@ void train(double x, double y, double z, double scaleX, double scaleY, double sc
 
     glPopMatrix();
     glPopMatrix();
+	glTranslated(x + scaleX * moveDistX, 0, 0);
+	drawsmoke(smokeparticles, 1000, 1);
 }

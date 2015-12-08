@@ -1,9 +1,6 @@
 #include <cmath>
 #include "color.h"
-#include "rain.h"
-#include "cover.h"
-#include "sphere.h"
-#include "cube.h"
+#include "particle.h"
 #define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -18,137 +15,162 @@ extern float shinyvec[1];
 extern unsigned int texture[20];
 extern float rainspeed;
 
-struct XYZ
-{
-	double x;
-	double y;
-	double z;
+FACET3 facets[32] = {
+{0.5, -0.5, 0.707107,
+1, 0, 0,
+0.5, 0.5, 0.707107},
+
+{0.5, 0.5, 0.707107,
+0, 1, 0,
+-0.5, 0.5, 0.707107},
+
+{-0.5, 0.5, 0.707107,
+-1, 0, 0,
+-0.5, -0.5, 0.707107},
+
+{-0.5, -0.5, 0.707107,
+0, -1, 0,
+0.5, -0.5, 0.707107},
+
+{0.5, 0.5, -0.707107,
+1, 0, 0,
+0.5, -0.5, -0.707107},
+
+{-0.5, 0.5, -0.707107,
+0, 1, 0,
+0.5, 0.5, -0.707107},
+
+{-0.5, -0.5, -0.707107,
+-1, 0, 0,
+-0.5, 0.5, -0.707107},
+
+{0.5, -0.5, -0.707107,
+0, -1, 0,
+-0.5, -0.5, -0.707107},
+
+{0, 0, 1,
+0.5, -0.5, 0.707107,
+0.5, 0.5, 0.707107},
+
+{0.5, -0.5, 0.707107,
+0.707107, -0.707107, 0,
+1, 0, 0},
+
+{1, 0, 0,
+0.707107, 0.707107, 0,
+0.5, 0.5, 0.707107},
+
+{0, 0, 1,
+0.5, 0.5, 0.707107,
+-0.5, 0.5, 0.707107},
+
+{0.5, 0.5, 0.707107,
+0.707107, 0.707107, 0,
+0, 1, 0},
+
+{0, 1, 0,
+-0.707107, 0.707107, 0,
+-0.5, 0.5, 0.707107},
+
+{0, 0, 1,
+-0.5, 0.5, 0.707107,
+-0.5, -0.5, 0.707107},
+
+{-0.5, 0.5, 0.707107,
+-0.707107, 0.707107, 0,
+-1, 0, 0},
+
+{-1, 0, 0,
+-0.707107, -0.707107, 0,
+-0.5, -0.5, 0.707107},
+
+{0, 0, 1,
+-0.5, -0.5, 0.707107,
+0.5, -0.5, 0.707107},
+
+{-0.5, -0.5, 0.707107,
+-0.707107, -0.707107, 0,
+0, -1, 0},
+
+{0, -1, 0,
+0.707107, -0.707107, 0,
+0.5, -0.5, 0.707107},
+
+{0, 0, -1,
+0.5, 0.5, -0.707107,
+0.5, -0.5, -0.707107},
+
+{0.5, 0.5, -0.707107,
+0.707107, 0.707107, 0,
+1, 0, 0},
+
+{1, 0, 0,
+0.707107, -0.707107, 0,
+0.5, -0.5, -0.707107},
+
+{0, 0, -1,
+-0.5, 0.5, -0.707107,
+0.5, 0.5, -0.707107},
+
+{-0.5, 0.5, -0.707107,
+-0.707107, 0.707107, 0,
+0, 1, 0},
+
+{0, 1, 0,
+0.707107, 0.707107, 0,
+0.5, 0.5, -0.707107},
+
+{0, 0, -1,
+-0.5, -0.5, -0.707107,
+-0.5, 0.5, -0.707107},
+
+{-0.5, -0.5, -0.707107,
+-0.707107, -0.707107, 0,
+-1, 0, 0},
+
+{-1, 0, 0,
+-0.707107, 0.707107, 0,
+-0.5, 0.5, -0.707107},
+
+{0, 0, -1,
+0.5, -0.5, -0.707107,
+-0.5, -0.5, -0.707107},
+
+{0.5, -0.5, -0.707107,
+0.707107, -0.707107, 0,
+0, -1, 0},
+
+{0, -1, 0,
+-0.707107, -0.707107, 0,
+-0.5, -0.5, -0.707107}
+
 };
 
-struct FACET3
-{
-	XYZ p1;
-	XYZ p2;
-	XYZ p3;
-};
-
-void Normalise(XYZ * p)
-{
-	double sr = sqrt(p->x * p->x + p->y * p->y + p->z * p->z);
-	p->x = p->x / sr;
-	p->y = p->y / sr;
-	p->z = p->z / sr;
-}
-
-
-/*
-
-
-
-   Create a triangular facet approximation to a sphere
-   Return the number of facets created.
-   The number of facets will be (4^iterations) * 8
-*/
-int CreateNSphere(FACET3 *f,int iterations)
-{
-   int i,it;
-   double a;
-   XYZ p[6] = {0,0,1,  0,0,-1,  -1,-1,0,  1,-1,0,  1,1,0, -1,1,0};
-   XYZ pa,pb,pc;
-   int nt = 0,ntold;
-
-   /* Create the level 0 object */
-   a = 1 / sqrt(2.0);
-   for (i=0;i<6;i++) {
-      p[i].x *= a;
-      p[i].y *= a;
-   }
-   f[0].p1 = p[0]; f[0].p2 = p[3]; f[0].p3 = p[4];
-   f[1].p1 = p[0]; f[1].p2 = p[4]; f[1].p3 = p[5];
-   f[2].p1 = p[0]; f[2].p2 = p[5]; f[2].p3 = p[2];
-   f[3].p1 = p[0]; f[3].p2 = p[2]; f[3].p3 = p[3];
-   f[4].p1 = p[1]; f[4].p2 = p[4]; f[4].p3 = p[3];
-   f[5].p1 = p[1]; f[5].p2 = p[5]; f[5].p3 = p[4];
-   f[6].p1 = p[1]; f[6].p2 = p[2]; f[6].p3 = p[5];
-   f[7].p1 = p[1]; f[7].p2 = p[3]; f[7].p3 = p[2];
-   nt = 8;
-
-   if (iterations < 1)
-      return(nt);
-
-   /* Bisect each edge and move to the surface of a unit sphere */
-   for (it=0;it<iterations;it++) {
-      ntold = nt;
-      for (i=0;i<ntold;i++) {
-         pa.x = (f[i].p1.x + f[i].p2.x) / 2;
-         pa.y = (f[i].p1.y + f[i].p2.y) / 2;
-         pa.z = (f[i].p1.z + f[i].p2.z) / 2;
-         pb.x = (f[i].p2.x + f[i].p3.x) / 2;
-         pb.y = (f[i].p2.y + f[i].p3.y) / 2;
-         pb.z = (f[i].p2.z + f[i].p3.z) / 2;
-         pc.x = (f[i].p3.x + f[i].p1.x) / 2;
-         pc.y = (f[i].p3.y + f[i].p1.y) / 2;
-         pc.z = (f[i].p3.z + f[i].p1.z) / 2;
-         Normalise(&pa);
-         Normalise(&pb);
-         Normalise(&pc);
-         f[nt].p1 = f[i].p1; f[nt].p2 = pa; f[nt].p3 = pc; nt++;
-         f[nt].p1 = pa; f[nt].p2 = f[i].p2; f[nt].p3 = pb; nt++;
-         f[nt].p1 = pb; f[nt].p2 = f[i].p3; f[nt].p3 = pc; nt++;
-         f[i].p1 = pa;
-         f[i].p2 = pb;
-         f[i].p3 = pc;
-      }
-   }
-
-   return(nt);
-}
 
 //
 // 
 //
-void rainDrop(RainDropDesc &drop)
+void drawparticle(Particle *p)
 {
 	glPushMatrix();
-	glTranslated(drop.newx, drop.newy, drop.newz);
-	glRotatef(drop.rotatex, 1, 0, 0);
-	glRotatef(drop.rotatez, 0, 0, 1);
-	glScaled(drop.scale, drop.scale, drop.scale);
+	glTranslated(p->x, p->y, p->z);
+	glRotatef(p->rotatex, 1, 0, 0);
+	glRotatef(p->rotatez, 0, 0, 1);
+	glScaled(p->scale, p->scale, p->scale);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	glDepthMask(0);
-	if(drop.shape)
-	{
-//		cover(0, 30, 0.3, Color(0.8, 0.9, 0.95, 0.8));
-//		sphere(0, -0.3, 0, 0.173, 90, 180, Color(0.8, 0.9, 0.95, 0.8), false, -1, -1, 1); 
-	}
-	else
-	{
 	
-	FACET3 facets[32];
+	glColor4f(p->color.r, p->color.g, p->color.b, p->color.dim);
 
-	CreateNSphere(facets, 1);
-		glColor4f(0.8, 0.9, 0.95, 0.8);
-
-		for(int i = 0; i< 32; ++i)
-		{
-	        glBegin(GL_POLYGON);
-            glVertex3f(facets[i].p1.x , facets[i].p1.y , facets[i].p1.z );
-            glVertex3f(facets[i].p2.x , facets[i].p2.y , facets[i].p2.z );
-            glVertex3f(facets[i].p3.x , facets[i].p3.y , facets[i].p3.z );
-			glEnd();
-		}
-/*
-		glColor4f(0.8, 0.9, 0.95, 0.8);
-
-		glBegin(GL_LINES);
-
-
-		glVertex3f(0, 0.4, 0);
-		glVertex3f(0, 0, 0);	
+	for(int i = 0; i< 32; ++i)
+	{
+		glBegin(GL_POLYGON);
+        glVertex3f(facets[i].p1.x , facets[i].p1.y , facets[i].p1.z);
+        glVertex3f(facets[i].p2.x , facets[i].p2.y , facets[i].p2.z);
+        glVertex3f(facets[i].p3.x , facets[i].p3.y , facets[i].p3.z);
 		glEnd();
-*/
 	}
 	glDisable(GL_BLEND);
 	glDepthMask(1);

@@ -1,35 +1,49 @@
-#ifndef __RAIN_H__	
-#define	__RAIN_H__ 
+#ifndef __PARTICLE_H__ 
+#define	__PARTICLE_H__ 
 
 #include "CSCIx229.h"
 #include "color.h"
 
-struct RainDropDesc
+struct XYZ
 {
-	int shape;
-	float x;
-	float y;
-	float z;
-	float newx;
-	float newy;
-	float newz;
-	int scale;
-	int rotatex;
-	int rotatez;
+	double x;
+	double y;
+	double z;
 };
+
+struct FACET3
+{
+	XYZ p1;
+	XYZ p2;
+	XYZ p3;
+};
+
+struct Particle
+{
+	double x;
+	double y;
+	double z;
+	double scale;
+	double xspeed;
+	double xacc;
+	double yspeed;
+	double yacc;
+	double zspeed;
+	double zacc;
+	double rotatex;
+	double rotatez;
+	Color color;
+};
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+void drawparticle(Particle *p);
 //
 // draw the cylinder. for example the stick holding the bubble.
 //
-void rainDrop(RainDropDesc &drop);
-
-void initrain(int maxx, int maxy, int maxz, int scaleMin, int scaleMax, int rotatex, int rotatez, RainDropDesc *drops, int amount);
-
-void drawrain(RainDropDesc * drops, int amount, float speed);
 #ifdef __cplusplus
 }   
 #endif  
